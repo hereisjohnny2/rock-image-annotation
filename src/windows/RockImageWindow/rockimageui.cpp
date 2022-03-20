@@ -1,13 +1,5 @@
-//
-// Created by joao on 19/03/2022.
-//
-
-// You may need to build the project (run Qt uic code generator) to get "ui_RockImageUI.h" resolved
-
 #include "rockimageui.h"
 #include "ui_rockimageui.h"
-#include "../../widgets/PixelDataTable.h"
-#include "../../widgets/ImageDisplaySubWindow.h"
 #include <QtWidgets>
 #include <map>
 
@@ -36,7 +28,7 @@ namespace RockImageUI {
     }
 
     void RockImageUI::openImage() {
-        QString fileName = QFileDialog::getOpenFileName(this, "Abrir Imagem", "./images");
+        QString fileName = QFileDialog::getOpenFileName(this, "Abrir Imagem");
         if (fileName.isEmpty()) {
             QMessageBox::critical(this, "Error", "Não foi possível abrir a imagem selecionada.");
             return;
@@ -104,11 +96,21 @@ namespace RockImageUI {
     }
 
     void RockImageUI::collectDataFromImage() {
-        auto *activeSubWindow = ui->openImagesArea->currentSubWindow();
-        auto *imageDisplayWidget = (ImageDisplayWidget *)(activeSubWindow->widget());
+        auto *activeSubWindow = (ImageDisplaySubWindow*) ui->openImagesArea->currentSubWindow();
+        auto *imageDisplayWidget = activeSubWindow->getImageLabel();
 
         if (imageDisplayWidget == nullptr) {
             return;
+        }
+
+        auto *pixelDataTable = (PixelDataTable*) ui->dataTablesTab->currentWidget();
+        if (pixelDataTable == nullptr) {
+            return;
+        }
+
+        QHash<QPoint, QRgb> pixelDataMap = imageDisplayWidget->getPixelDataMap();
+        for(auto i = pixelDataMap.constBegin(); i != pixelDataMap.constEnd(); ++i) {
+            pixelDataTable->addData(i.key(), i.value(), QString("Solid"));
         }
     }
 

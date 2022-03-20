@@ -1,7 +1,3 @@
-//
-// Created by joao on 19/03/2022.
-//
-
 #include <QMouseEvent>
 #include "ImageDisplayWidget.h"
 
@@ -13,8 +9,8 @@ ImageDisplayWidget::ImageDisplayWidget() {
 
 void ImageDisplayWidget::mouseMoveEvent(QMouseEvent *mouseEvent) {
     QPoint currentPoint = mouseEvent->pos();
-
-    QRgb color = QColor(image.pixel(currentPoint)).rgb();
+    QRgb rgb = QColor(image.pixel(currentPoint)).rgb();
+    pixelDataMap.insert(currentPoint, rgb);
 }
 
 void ImageDisplayWidget::setImage(const QImage &newImage) {
@@ -26,4 +22,9 @@ void ImageDisplayWidget::setImage(const QImage &newImage) {
 const QImage &ImageDisplayWidget::getImage() const {
     return image;
 }
+
+const QHash<QPoint, QRgb> &ImageDisplayWidget::getPixelDataMap() const {
+    return pixelDataMap;
+}
+
 

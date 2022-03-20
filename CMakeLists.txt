@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.21)
 project(rock_image_cpp)
 
 set(CMAKE_CXX_STANDARD 17)
+add_definitions(-D_GLIBCXX_USE_CXX17_ABI=0)
+
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)

@@ -8,10 +8,12 @@
 
 #include <QLabel>
 #include <map>
+#include "PixelDataTable.h"
 
 class ImageDisplayWidget : public QLabel {
 private:
     QImage image;
+    QHash<QPoint, QRgb> pixelDataMap{};
 
 public:
     ImageDisplayWidget();
@@ -19,6 +21,7 @@ public:
     void setImage(const QImage &newImage);
 
     [[nodiscard]] const QImage &getImage() const;
+    const QHash<QPoint, QRgb> &getPixelDataMap() const;
 
     void mouseMoveEvent(QMouseEvent *mouseEvent) override;
 };

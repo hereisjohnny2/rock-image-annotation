@@ -44,3 +44,7 @@ bool ImageDisplaySubWindow::loadImage(const QString &filePath) {
     return true;
 }
 
+ImageDisplayWidget *ImageDisplaySubWindow::getImageLabel() const {
+    return imageLabel;
+}
+

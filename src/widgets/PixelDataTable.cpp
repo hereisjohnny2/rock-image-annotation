@@ -1,41 +1,40 @@
-//
-// Created by joao on 19/03/2022.
-//
-
 #include "PixelDataTable.h"
+#include <QHeaderView>
+#include <QTableWidgetItem>
 
 PixelDataTable::PixelDataTable() {
-    this->setTableHeaders();
+    setTableHeaders();
 
     QSizePolicy updatedSizePolicy;
     updatedSizePolicy.setHorizontalStretch(0);
     updatedSizePolicy.setVerticalStretch(0);
     updatedSizePolicy.setHeightForWidth(sizePolicy().hasHeightForWidth());
 
-    this->setSizePolicy(updatedSizePolicy);
+    setSizePolicy(updatedSizePolicy);
+    horizontalHeader()->setStretchLastSection(true);
 }
 
 void PixelDataTable::setTableHeaders() {
-    this->setColumnCount(6);
-    this->setHorizontalHeaderItem(0, new QTableWidgetItem("PosX"));
-    this->setHorizontalHeaderItem(1, new QTableWidgetItem("PosY"));
-    this->setHorizontalHeaderItem(2, new QTableWidgetItem("Vermelho"));
-    this->setHorizontalHeaderItem(3, new QTableWidgetItem("Verde"));
-    this->setHorizontalHeaderItem(4, new QTableWidgetItem("Azul"));
-    this->setHorizontalHeaderItem(5, new QTableWidgetItem("Label"));
+    setColumnCount(6);
+    setHorizontalHeaderItem(0, new QTableWidgetItem("PosX"));
+    setHorizontalHeaderItem(1, new QTableWidgetItem("PosY"));
+    setHorizontalHeaderItem(2, new QTableWidgetItem("Vermelho"));
+    setHorizontalHeaderItem(3, new QTableWidgetItem("Verde"));
+    setHorizontalHeaderItem(4, new QTableWidgetItem("Azul"));
+    setHorizontalHeaderItem(5, new QTableWidgetItem("Label"));
 }
 
 void PixelDataTable::addData(const QPoint &point, const QRgb& rgb, const QString& label) {
-    this->setRowCount(this->rowCount() + 1);
+    setRowCount(rowCount() + 1);
 
-    this->addCell(0, QString::number(point.x()));
-    this->addCell(1, QString::number(point.y()));
-    this->addCell(2, QString::number(qRed(rgb)));
-    this->addCell(3, QString::number(qGreen(rgb)));
-    this->addCell(4, QString::number(qBlue(rgb)));
-    this->addCell(5, label);
+    addCell(0, QStringLiteral("%1").arg(point.x()));
+    addCell(1, QStringLiteral("%1").arg(point.y()));
+    addCell(2, QStringLiteral("%1").arg(qRed(rgb)));
+    addCell(3, QStringLiteral("%1").arg(qGreen(rgb)));
+    addCell(4, QStringLiteral("%1").arg(qBlue(rgb)));
+    addCell(5, label);
 }
 
 void PixelDataTable::addCell(int column, const QString& value) {
-    setItem(this->rowCount(), column, new QTableWidgetItem(value));
+    setItem(rowCount() - 1, column, new QTableWidgetItem(value));
 }

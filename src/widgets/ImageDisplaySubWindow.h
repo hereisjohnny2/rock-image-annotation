@@ -11,6 +11,9 @@ class ImageDisplaySubWindow : public QMdiSubWindow {
 
 public:
     ImageDisplaySubWindow(const QString& filePath, const QString& fileName);
+
+    [[nodiscard]] ImageDisplayWidget *getImageLabel() const;
+
     bool loadImage(const QString &filePath);
 
 private:

@@ -7,6 +7,8 @@
 
 #include <QMainWindow>
 #include <QListWidgetItem>
+#include "../../widgets/PixelDataTable.h"
+#include "../../widgets/ImageDisplaySubWindow.h"
 
 namespace RockImageUI {
     QT_BEGIN_NAMESPACE
@@ -34,6 +36,10 @@ namespace RockImageUI {
 
     private:
         Ui::RockImageUI *ui;
+
+        int getPixelDataTableByName(const QString& qString);
+
+        ImageDisplaySubWindow *getSubWidowByName(const QString& name);
     };
 
 } // RockImageUI

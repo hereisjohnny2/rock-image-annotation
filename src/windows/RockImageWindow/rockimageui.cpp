@@ -60,9 +60,18 @@ namespace RockImageUI {
 
     void RockImageUI::loadImage(const QString& filePath) {
         auto *listItem = new QListWidgetItem();
-        listItem->setText(filePath.section("/", -1, -1));
-        listItem->setToolTip(filePath);
-        ui->imagesList->addItem(listItem);
+
+        QString fileName = filePath.section("/", -1, -1);
+        QList<QListWidgetItem *> foundItems = ui->imagesList->findItems(fileName, Qt::MatchExactly);
+
+        if (foundItems.empty()) {
+            listItem = new QListWidgetItem();
+            listItem->setText(fileName);
+            listItem->setToolTip(filePath);
+            ui->imagesList->addItem(listItem);
+        } else {
+            listItem = foundItems[0];
+        }
 
         showImage(listItem);
     }
@@ -71,12 +80,24 @@ namespace RockImageUI {
         QString filePath = listWidgetItem->toolTip();
         QString fileName = listWidgetItem->text();
 
-        auto *pixelDataTable = new PixelDataTable();
-        ui->dataTablesTab->addTab(pixelDataTable, fileName);
 
-        auto *subWindow = new ImageDisplaySubWindow(filePath, fileName);
-        subWindow->setAttribute(Qt::WA_DeleteOnClose);
-        ui->openImagesArea->addSubWindow(subWindow);
+        int pixelDataTableIndex = getPixelDataTableByName(fileName);
+
+        if (pixelDataTableIndex == -1) {
+            auto *pixelDataTable = new PixelDataTable();
+            ui->dataTablesTab->addTab(pixelDataTable, fileName);
+            pixelDataTableIndex = ui->dataTablesTab->count();
+        }
+
+        ui->dataTablesTab->setCurrentIndex(pixelDataTableIndex);
+
+        auto *subWindow = getSubWidowByName(fileName);
+
+        if (subWindow == nullptr) {
+            subWindow = new ImageDisplaySubWindow(filePath, fileName);
+            subWindow->setAttribute(Qt::WA_DeleteOnClose);
+            ui->openImagesArea->addSubWindow(subWindow);
+        }
 
         subWindow->loadImage(filePath);
         subWindow->show();
@@ -89,5 +110,25 @@ namespace RockImageUI {
         if (imageDisplayWidget == nullptr) {
             return;
         }
+    }
+
+    int RockImageUI::getPixelDataTableByName(const QString& name) {
+        for (int i = 0; i < ui->dataTablesTab->count(); ++i) {
+            if (ui->dataTablesTab->tabText(i) == name) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    ImageDisplaySubWindow *RockImageUI::getSubWidowByName(const QString& name) {
+        for (auto &subWindow : ui->openImagesArea->subWindowList()) {
+            if (subWindow->windowTitle() == name) {
+                return (ImageDisplaySubWindow*) subWindow;
+            }
+        }
+
+        return nullptr;
     }
 } // RockImageUI

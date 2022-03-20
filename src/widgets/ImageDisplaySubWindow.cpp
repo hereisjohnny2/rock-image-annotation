@@ -1,14 +1,9 @@
-//
-// Created by joao on 19/03/2022.
-//
-
 #include <QImageReader>
 #include <QMessageBox>
 #include <QGuiApplication>
 #include <QDir>
 #include <QScreen>
 #include <QMouseEvent>
-#include <QDebug>
 
 #include "ImageDisplaySubWindow.h"
 #include "ImageDisplayWidget.h"
@@ -23,6 +18,8 @@ ImageDisplaySubWindow::ImageDisplaySubWindow(const QString& filePath, const QStr
     scrollArea->setVisible(false);
 
     this->setWidget(scrollArea);
+
+    resize(QGuiApplication::primaryScreen()->availableSize() * 2 / 5);
 }
 
 bool ImageDisplaySubWindow::loadImage(const QString &filePath) {

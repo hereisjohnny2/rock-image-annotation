@@ -16,6 +16,12 @@ namespace RockImageUI {
             QMainWindow(parent), ui(new Ui::RockImageUI) {
         ui->setupUi(this);
 
+        // ImageList Events
+        connect(ui->imagesList,
+                SIGNAL(itemDoubleClicked(QListWidgetItem*)),
+                this,
+                SLOT(showImage(QListWidgetItem*)));
+
         // File Menu Actions
         connect(ui->openImageAction, SIGNAL(triggered()), this, SLOT(openImage()));
         connect(ui->saveDataAction, SIGNAL(triggered()), this, SLOT(saveTableData()));
@@ -58,12 +64,12 @@ namespace RockImageUI {
         listItem->setToolTip(filePath);
         ui->imagesList->addItem(listItem);
 
-        showImage(*listItem);
+        showImage(listItem);
     }
 
-    void RockImageUI::showImage(const QListWidgetItem &listWidgetItem) {
-        QString filePath = listWidgetItem.toolTip();
-        QString fileName = listWidgetItem.text();
+    void RockImageUI::showImage(QListWidgetItem *listWidgetItem) {
+        QString filePath = listWidgetItem->toolTip();
+        QString fileName = listWidgetItem->text();
 
         auto *pixelDataTable = new PixelDataTable();
         ui->dataTablesTab->addTab(pixelDataTable, fileName);

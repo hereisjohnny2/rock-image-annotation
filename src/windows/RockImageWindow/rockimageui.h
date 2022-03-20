@@ -27,10 +27,10 @@ namespace RockImageUI {
         void cleanTable();
         void applyBinarization();
         void collectDataFromImage();
+        void showImage(QListWidgetItem *listWidgetItem);
 
     private:
         void loadImage(const QString& filePath);
-        void showImage(const QListWidgetItem &listWidgetItem);
 
     private:
         Ui::RockImageUI *ui;

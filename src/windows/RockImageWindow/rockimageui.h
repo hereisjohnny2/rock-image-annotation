@@ -26,6 +26,7 @@ namespace RockImageUI {
         void saveTableData();
         void cleanTable();
         void applyBinarization();
+        void collectDataFromImage();
 
     private:
         void loadImage(const QString& filePath);

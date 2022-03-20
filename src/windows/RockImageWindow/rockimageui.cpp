@@ -9,6 +9,7 @@
 #include "../../widgets/PixelDataTable.h"
 #include "../../widgets/ImageDisplaySubWindow.h"
 #include <QtWidgets>
+#include <map>
 
 namespace RockImageUI {
     RockImageUI::RockImageUI(QWidget *parent) :
@@ -21,7 +22,7 @@ namespace RockImageUI {
         connect(ui->cleanTableAction, SIGNAL(triggered()), this, SLOT(cleanTable()));
 
         // Image Menu Actions
-        connect(ui->applyBinarizationAction, SIGNAL(triggered()), this, SLOT(applyBinarization()));
+        connect(ui->applyBinarizationAction, SIGNAL(triggered()), this, SLOT(collectDataFromImage()));
     }
 
     RockImageUI::~RockImageUI() {
@@ -55,8 +56,8 @@ namespace RockImageUI {
         auto *listItem = new QListWidgetItem();
         listItem->setText(filePath.section("/", -1, -1));
         listItem->setToolTip(filePath);
-
         ui->imagesList->addItem(listItem);
+
         showImage(*listItem);
     }
 
@@ -68,9 +69,19 @@ namespace RockImageUI {
         ui->dataTablesTab->addTab(pixelDataTable, fileName);
 
         auto *subWindow = new ImageDisplaySubWindow(filePath, fileName);
+        subWindow->setAttribute(Qt::WA_DeleteOnClose);
         ui->openImagesArea->addSubWindow(subWindow);
 
         subWindow->loadImage(filePath);
         subWindow->show();
+    }
+
+    void RockImageUI::collectDataFromImage() {
+        auto *activeSubWindow = ui->openImagesArea->currentSubWindow();
+        auto *imageDisplayWidget = (ImageDisplayWidget *)(activeSubWindow->widget());
+
+        if (imageDisplayWidget == nullptr) {
+            return;
+        }
     }
 } // RockImageUI

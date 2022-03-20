@@ -2,29 +2,28 @@
 // Created by joao on 19/03/2022.
 //
 
+#include <QMouseEvent>
 #include "ImageDisplayWidget.h"
 
 ImageDisplayWidget::ImageDisplayWidget() {
-    image = QImage();
-    this->setPixmap(QPixmap::fromImage(image));
-    this->setSizePolicy(QSizePolicy::Policy::Ignored, QSizePolicy::Policy::Ignored);
-    this->setScaledContents(true);
-    this->setAlignment(Qt::AlignCenter);
+    setBackgroundRole(QPalette::Base);
+    setSizePolicy(QSizePolicy::Policy::Ignored, QSizePolicy::Policy::Ignored);
+    setScaledContents(true);
 }
 
-void ImageDisplayWidget::openImage(const QString &filePath) {
-    image = QImage(filePath);
-    this->setPixmap(QPixmap::fromImage(image));
+void ImageDisplayWidget::mouseMoveEvent(QMouseEvent *mouseEvent) {
+    QPoint currentPoint = mouseEvent->pos();
+
+    QRgb color = QColor(image.pixel(currentPoint)).rgb();
 }
 
-const PixelData &ImageDisplayWidget::getCollectedPixelData() const {
-    return collectedPixelData;
+void ImageDisplayWidget::setImage(const QImage &newImage) {
+    image = newImage;
+    setPixmap(QPixmap::fromImage(image));
+    adjustSize();
 }
 
-void ImageDisplayWidget::resetCollectedData() {
-    collectedPixelData = PixelData();
+const QImage &ImageDisplayWidget::getImage() const {
+    return image;
 }
 
-void ImageDisplayWidget::mouseMoveEvent(QMouseEvent *ev) {
-    QLabel::mouseMoveEvent(ev);
-}

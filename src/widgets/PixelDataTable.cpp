@@ -25,14 +25,14 @@ void PixelDataTable::setTableHeaders() {
     this->setHorizontalHeaderItem(5, new QTableWidgetItem("Label"));
 }
 
-void PixelDataTable::addData(const QPoint &point, const QVector<int>& rgba, const QString& label) {
+void PixelDataTable::addData(const QPoint &point, const QRgb& rgb, const QString& label) {
     this->setRowCount(this->rowCount() + 1);
 
     this->addCell(0, QString::number(point.x()));
     this->addCell(1, QString::number(point.y()));
-    this->addCell(2, QString::number(rgba[0]));
-    this->addCell(3, QString::number(rgba[1]));
-    this->addCell(4, QString::number(rgba[2]));
+    this->addCell(2, QString::number(qRed(rgb)));
+    this->addCell(3, QString::number(qGreen(rgb)));
+    this->addCell(4, QString::number(qBlue(rgb)));
     this->addCell(5, label);
 }
 

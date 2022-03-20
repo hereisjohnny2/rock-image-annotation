@@ -7,18 +7,20 @@
 
 
 #include <QLabel>
-#include "../entities/PixelData.h"
+#include <map>
 
 class ImageDisplayWidget : public QLabel {
 private:
     QImage image;
-    PixelData collectedPixelData = PixelData();
+
 public:
     ImageDisplayWidget();
-    void openImage(const QString& filePath);
-    const PixelData &getCollectedPixelData() const;
-    void resetCollectedData();
-    void mouseMoveEvent(QMouseEvent *ev) override;
+
+    void setImage(const QImage &newImage);
+
+    [[nodiscard]] const QImage &getImage() const;
+
+    void mouseMoveEvent(QMouseEvent *mouseEvent) override;
 };
 
 

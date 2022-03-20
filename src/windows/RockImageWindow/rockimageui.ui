@@ -15,6 +15,9 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout_2">
+    <item row="0" column="0" rowspan="2">
+     <widget class="QListWidget" name="imagesList"/>
+    </item>
     <item row="2" column="0" colspan="2">
      <widget class="QTabWidget" name="dataTablesTab">
       <property name="sizePolicy">
@@ -34,9 +37,6 @@
        </sizepolicy>
       </property>
      </widget>
-    </item>
-    <item row="0" column="0" rowspan="2">
-     <widget class="QListWidget" name="imagesList"/>
     </item>
    </layout>
   </widget>
@@ -72,12 +72,19 @@
    <property name="windowTitle">
     <string>toolBar</string>
    </property>
+   <property name="movable">
+    <bool>false</bool>
+   </property>
+   <property name="floatable">
+    <bool>false</bool>
+   </property>
    <attribute name="toolBarArea">
     <enum>TopToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="separator"/>
   </widget>
   <action name="openImageAction">
    <property name="text">
@@ -119,7 +126,24 @@
     <string>Ctrl+B</string>
    </property>
   </action>
+  <action name="collectDataAction">
+   <property name="icon">
+    <iconset resource="rockImageResources.qrc">
+     <normaloff>:/icons/plus.png</normaloff>:/icons/plus.png</iconset>
+   </property>
+   <property name="text">
+    <string>Coletar Dados</string>
+   </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Evia para a tabela os dados de posição e RGB coletados na imagem&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+J</string>
+   </property>
+  </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="rockImageResources.qrc"/>
+ </resources>
  <connections/>
 </ui>

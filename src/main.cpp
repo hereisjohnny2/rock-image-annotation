@@ -6,6 +6,7 @@ int main(int argc, char *argv[]) {
     QApplication application(argc, argv);
 
     RockImageUI::RockImageUI rockImageUi;
+    rockImageUi.setWindowState(Qt::WindowMaximized);
     rockImageUi.show();
 
     return QApplication::exec();

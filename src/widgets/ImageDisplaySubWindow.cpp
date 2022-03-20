@@ -6,17 +6,17 @@
 #include <QMessageBox>
 #include <QGuiApplication>
 #include <QDir>
+#include <QScreen>
+#include <QMouseEvent>
+#include <QDebug>
+
 #include "ImageDisplaySubWindow.h"
 #include "ImageDisplayWidget.h"
 
 ImageDisplaySubWindow::ImageDisplaySubWindow(const QString& filePath, const QString& fileName)
-    : imageLabel(new QLabel()), scrollArea(new QScrollArea())
+    : imageLabel(new ImageDisplayWidget()), scrollArea(new QScrollArea())
 {
     this->setWindowTitle(fileName);
-
-    imageLabel->setBackgroundRole(QPalette::Base);
-    imageLabel->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
-    imageLabel->setScaledContents(true);
 
     scrollArea->setBackgroundRole(QPalette::Dark);
     scrollArea->setWidget(imageLabel);
@@ -39,10 +39,7 @@ bool ImageDisplaySubWindow::loadImage(const QString &filePath) {
         return false;
     }
 
-    image = newImage;
-    imageLabel->setPixmap(QPixmap::fromImage(image));
-
-    imageLabel->adjustSize();
+    imageLabel->setImage(newImage);
 
     scaleFactor = 1.0;
     scrollArea->setVisible(true);

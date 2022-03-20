@@ -9,6 +9,7 @@
 #include <QMdiSubWindow>
 #include <QLabel>
 #include <QScrollArea>
+#include "ImageDisplayWidget.h"
 
 class ImageDisplaySubWindow : public QMdiSubWindow {
 
@@ -17,8 +18,7 @@ public:
     bool loadImage(const QString &filePath);
 
 private:
-    QImage image;
-    QLabel *imageLabel;
+    ImageDisplayWidget *imageLabel;
     QScrollArea *scrollArea;
     double scaleFactor = 1;
 };

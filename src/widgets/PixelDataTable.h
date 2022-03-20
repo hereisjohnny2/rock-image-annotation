@@ -11,7 +11,7 @@
 class PixelDataTable : public QTableWidget {
 public:
     PixelDataTable();
-    void addData(const QPoint& point, const QVector<int>& rgba, const QString& label);
+    void addData(const QPoint& point, const QRgb& rgb, const QString& label);
 
 private:
     void setTableHeaders();

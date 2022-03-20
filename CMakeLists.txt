@@ -13,7 +13,7 @@ find_package(Qt6 COMPONENTS
         Widgets
         REQUIRED)
 
-add_executable(rock_image_cpp src/main.cpp src/windows/RockImageWindow/rockimageui.cpp src/windows/RockImageWindow/rockimageui.h src/widgets/PixelDataTable.cpp src/widgets/PixelDataTable.h src/widgets/ImageDisplaySubWindow.cpp src/widgets/ImageDisplaySubWindow.h src/widgets/ImageDisplayWidget.cpp src/widgets/ImageDisplayWidget.h src/entities/PixelData.cpp src/entities/PixelData.h)
+add_executable(rock_image_cpp src/main.cpp src/windows/RockImageWindow/rockimageui.cpp src/windows/RockImageWindow/rockimageui.h src/widgets/PixelDataTable.cpp src/widgets/PixelDataTable.h src/widgets/ImageDisplaySubWindow.cpp src/widgets/ImageDisplaySubWindow.h src/widgets/ImageDisplayWidget.cpp src/widgets/ImageDisplayWidget.h)
 target_link_libraries(rock_image_cpp
         Qt::Core
         Qt::Gui

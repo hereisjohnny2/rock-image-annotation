@@ -38,8 +38,32 @@ namespace RockImageUI {
     }
 
     void RockImageUI::saveTableData() {
-        qDebug("Save Data");
+        auto *pixelDataTable = (PixelDataTable*) ui->dataTablesTab->currentWidget();
+        if (pixelDataTable == nullptr) {
+            QMessageBox::warning(this,
+                                 "Tabela Vazia",
+                                 "Não exitem dados a serem coletados. Mova o mouse sobre a imagem para coletar dados.");
+            return;
+        }
 
+        QString fileName = QFileDialog::getSaveFileName(this, "Salvar Dados");
+        QFile file(fileName);
+
+        if (!file.open(QIODevice::WriteOnly | QFile::Text)) {
+            QMessageBox::warning(this, "Erro", "Não foi possível salvar o arquivo.");
+            return;
+        }
+
+        QTextStream out(&file);
+        for (int i = 0; i < pixelDataTable->rowCount(); ++i) {
+            out << pixelDataTable->item(i, 2)->text() << "\t"
+                << pixelDataTable->item(i, 3)->text() << "\t"
+                << pixelDataTable->item(i, 4)->text() << "\t"
+                << pixelDataTable->item(i, 5)->text() << "\n";
+        }
+        file.close();
+
+        QMessageBox::information(this, "Sucesso", "Arquivo Salvo com Sucesso");
     }
 
     void RockImageUI::cleanTable() {
@@ -97,14 +121,26 @@ namespace RockImageUI {
 
     void RockImageUI::collectDataFromImage() {
         auto *activeSubWindow = (ImageDisplaySubWindow*) ui->openImagesArea->currentSubWindow();
-        auto *imageDisplayWidget = activeSubWindow->getImageLabel();
+        if (activeSubWindow == nullptr) {
+            QMessageBox::warning(this,
+                                 "Área de Trabalho Vazia",
+                                 "Não exitem dados a serem coletados. Abra uma imagem para prosseguir.");
+            return;
+        }
 
+        auto *imageDisplayWidget = activeSubWindow->getImageLabel();
         if (imageDisplayWidget == nullptr) {
+            QMessageBox::warning(this,
+                                 "Área de Trabalho Vazia",
+                                 "Não exitem dados a serem coletados. Abra uma imagem para prosseguir.");
             return;
         }
 
         auto *pixelDataTable = (PixelDataTable*) ui->dataTablesTab->currentWidget();
         if (pixelDataTable == nullptr) {
+            QMessageBox::warning(this,
+                                 "Tabela Vazia",
+                                 "Não exitem dados a serem coletados. Mova o mouse sobre a imagem para coletar dados.");
             return;
         }
 
@@ -133,4 +169,5 @@ namespace RockImageUI {
 
         return nullptr;
     }
+
 } // RockImageUI

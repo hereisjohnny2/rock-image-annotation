@@ -19,6 +19,7 @@ namespace RockImageUI {
         connect(ui->openImageAction, SIGNAL(triggered()), this, SLOT(openImage()));
         connect(ui->saveDataAction, SIGNAL(triggered()), this, SLOT(saveTableData()));
         connect(ui->cleanTableAction, SIGNAL(triggered()), this, SLOT(cleanTable()));
+        connect(ui->exitAction, &QAction::triggered, [this](){QApplication::quit();});
 
         // Image Menu Actions
         connect(ui->applyBinarizationAction, SIGNAL(triggered()), this, SLOT(collectDataFromImage()));

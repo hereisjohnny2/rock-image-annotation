@@ -27,4 +27,8 @@ const QHash<QPoint, QRgb> &ImageDisplayWidget::getPixelDataMap() const {
     return pixelDataMap;
 }
 
+void ImageDisplayWidget::clearPixelDataMap() {
+    pixelDataMap = {};
+}
+
 

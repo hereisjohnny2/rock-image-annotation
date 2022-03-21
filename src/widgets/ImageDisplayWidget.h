@@ -21,7 +21,8 @@ public:
     void setImage(const QImage &newImage);
 
     [[nodiscard]] const QImage &getImage() const;
-    const QHash<QPoint, QRgb> &getPixelDataMap() const;
+    [[nodiscard]] const QHash<QPoint, QRgb> &getPixelDataMap() const;
+    void clearPixelDataMap();
 
     void mouseMoveEvent(QMouseEvent *mouseEvent) override;
 };

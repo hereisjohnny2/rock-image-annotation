@@ -2,6 +2,7 @@
 #include "ui_rockimageui.h"
 #include <QtWidgets>
 #include <map>
+#include <QDialog>
 
 namespace RockImageUI {
     RockImageUI::RockImageUI(QWidget *parent) :
@@ -67,7 +68,39 @@ namespace RockImageUI {
     }
 
     void RockImageUI::cleanTable() {
-        qDebug("Clean Table");
+        auto *activeSubWindow = (ImageDisplaySubWindow*) ui->openImagesArea->currentSubWindow();
+        if (activeSubWindow == nullptr) {
+            QMessageBox::warning(this,
+                                 "Área de Trabalho Vazia",
+                                 "Não exitem dados a serem coletados. Abra uma imagem para prosseguir.");
+            return;
+        }
+
+        auto *imageDisplayWidget = activeSubWindow->getImageLabel();
+        if (imageDisplayWidget == nullptr) {
+            QMessageBox::warning(this,
+                                 "Área de Trabalho Vazia",
+                                 "Não exitem dados a serem coletados. Abra uma imagem para prosseguir.");
+            return;
+        }
+
+        auto *pixelDataTable = (PixelDataTable*) ui->dataTablesTab->currentWidget();
+        if (pixelDataTable == nullptr) {
+            QMessageBox::warning(this,
+                                 "Tabela Vazia",
+                                 "Não exitem dados a serem coletados. Mova o mouse sobre a imagem para coletar dados.");
+            return;
+        }
+
+        QMessageBox::StandardButton result = QMessageBox::question(this, "Limpar Tabela", "Tem certeza que deseja limpar os dados coletados na tabela?");
+        if (result == QMessageBox::No) {
+            return;
+        }
+
+        pixelDataTable->clearContents();
+        pixelDataTable->setRowCount(0);
+        imageDisplayWidget->clearPixelDataMap();
+
     }
 
     void RockImageUI::applyBinarization() {
@@ -148,6 +181,8 @@ namespace RockImageUI {
         for(auto i = pixelDataMap.constBegin(); i != pixelDataMap.constEnd(); ++i) {
             pixelDataTable->addData(i.key(), i.value(), QString("Solid"));
         }
+
+        imageDisplayWidget->clearPixelDataMap();
     }
 
     int RockImageUI::getPixelDataTableByName(const QString& name) {

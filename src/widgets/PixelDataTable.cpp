@@ -27,11 +27,11 @@ void PixelDataTable::setTableHeaders() {
 void PixelDataTable::addData(const QPoint &point, const QRgb& rgb, const QString& label) {
     setRowCount(rowCount() + 1);
 
-    addCell(0, QStringLiteral("%1").arg(point.x()));
-    addCell(1, QStringLiteral("%1").arg(point.y()));
-    addCell(2, QStringLiteral("%1").arg(qRed(rgb)));
-    addCell(3, QStringLiteral("%1").arg(qGreen(rgb)));
-    addCell(4, QStringLiteral("%1").arg(qBlue(rgb)));
+    addCell(0, QString::number(point.x()));
+    addCell(1, QString::number(point.y()));
+    addCell(2, QString::number(qRed(rgb)));
+    addCell(3, QString::number(qGreen(rgb)));
+    addCell(4, QString::number(qBlue(rgb)));
     addCell(5, label);
 }
 

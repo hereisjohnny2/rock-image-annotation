@@ -33,6 +33,8 @@ namespace RockImageUI {
 
     private:
         void loadImage(const QString& filePath);
+        void createToolBar();
+        void setActionsIcons();
 
     private:
         Ui::RockImageUI *ui;

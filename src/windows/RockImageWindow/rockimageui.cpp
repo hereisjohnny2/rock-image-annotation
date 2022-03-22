@@ -9,6 +9,8 @@ namespace RockImageUI {
             QMainWindow(parent), ui(new Ui::RockImageUI) {
         ui->setupUi(this);
 
+        setActionsIcons();
+
         // ImageList Events
         connect(ui->imagesList,
                 SIGNAL(itemDoubleClicked(QListWidgetItem*)),
@@ -23,6 +25,8 @@ namespace RockImageUI {
 
         // Image Menu Actions
         connect(ui->applyBinarizationAction, SIGNAL(triggered()), this, SLOT(collectDataFromImage()));
+
+        createToolBar();
     }
 
     RockImageUI::~RockImageUI() {
@@ -204,6 +208,32 @@ namespace RockImageUI {
         }
 
         return nullptr;
+    }
+
+    void RockImageUI::createToolBar() {
+        ui->toolBar->clear();
+        ui->toolBar->addAction(ui->openImageAction);
+        ui->toolBar->addSeparator();
+        ui->toolBar->addAction(ui->collectDataAction);
+        ui->toolBar->addAction(ui->cleanTableAction);
+        ui->toolBar->addSeparator();
+        ui->toolBar->addAction(ui->zoomInAction);
+        ui->toolBar->addAction(ui->zoomOutAction);
+        ui->toolBar->addSeparator();
+        ui->toolBar->addAction(ui->closeAllAction);
+    }
+
+    void RockImageUI::setActionsIcons() {
+        ui->openImageAction->setIcon(QIcon("../src/assets/icons/add.svg"));
+        ui->saveDataAction->setIcon(QIcon("../src/assets/icons/save.svg"));
+        ui->cleanTableAction->setIcon(QIcon("../src/assets/icons/clean-table.svg"));
+        ui->exitAction->setIcon(QIcon("../src/assets/icons/exit.svg"));
+        ui->applyBinarizationAction->setIcon(QIcon("../src/assets/icons/binary.svg"));
+        ui->collectDataAction->setIcon(QIcon("../src/assets/icons/collect.svg"));
+        ui->changeLabelAction->setIcon(QIcon("../src/assets/icons/change.svg"));
+        ui->zoomInAction->setIcon(QIcon("../src/assets/icons/zoom-in.svg"));
+        ui->zoomOutAction->setIcon(QIcon("../src/assets/icons/zoom-out.svg"));
+        ui->closeAllAction->setIcon(QIcon("../src/assets/icons/close-all.svg"));
     }
 
 } // RockImageUI

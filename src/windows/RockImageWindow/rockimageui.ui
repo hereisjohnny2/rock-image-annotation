@@ -15,8 +15,15 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout_2">
-    <item row="0" column="0" rowspan="2">
-     <widget class="QListWidget" name="imagesList"/>
+    <item row="0" column="1" rowspan="2">
+     <widget class="QMdiArea" name="openImagesArea">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>3</horstretch>
+        <verstretch>2</verstretch>
+       </sizepolicy>
+      </property>
+     </widget>
     </item>
     <item row="2" column="0" colspan="2">
      <widget class="QTabWidget" name="dataTablesTab">
@@ -28,15 +35,8 @@
       </property>
      </widget>
     </item>
-    <item row="0" column="1" rowspan="2">
-     <widget class="QMdiArea" name="openImagesArea">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-        <horstretch>3</horstretch>
-        <verstretch>2</verstretch>
-       </sizepolicy>
-      </property>
-     </widget>
+    <item row="0" column="0" rowspan="2">
+     <widget class="QListWidget" name="imagesList"/>
     </item>
    </layout>
   </widget>
@@ -128,17 +128,58 @@
   </action>
   <action name="collectDataAction">
    <property name="icon">
-    <iconset resource="rockImageResources.qrc">
+    <iconset>
      <normaloff>:/icons/plus.png</normaloff>:/icons/plus.png</iconset>
    </property>
    <property name="text">
     <string>Coletar Dados</string>
    </property>
    <property name="toolTip">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Evia para a tabela os dados de posição e RGB coletados na imagem&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    <string>Envia dados coletados para a tabela</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+J</string>
+   </property>
+  </action>
+  <action name="changeLabelAction">
+   <property name="text">
+    <string>Alterar Label</string>
+   </property>
+   <property name="toolTip">
+    <string>Altera a label atribuida ao dado coletado</string>
+   </property>
+  </action>
+  <action name="zoomInAction">
+   <property name="text">
+    <string>Aproximar</string>
+   </property>
+   <property name="toolTip">
+    <string>Aproximar</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+=</string>
+   </property>
+  </action>
+  <action name="zoomOutAction">
+   <property name="text">
+    <string>Afastar</string>
+   </property>
+   <property name="toolTip">
+    <string>Afastar</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+-</string>
+   </property>
+  </action>
+  <action name="closeAllAction">
+   <property name="text">
+    <string>Fechar Todas Janelas</string>
+   </property>
+   <property name="toolTip">
+    <string>Fecha todas as janelas na área de trabalho</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+X</string>
    </property>
   </action>
  </widget>

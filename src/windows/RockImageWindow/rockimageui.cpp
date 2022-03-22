@@ -48,11 +48,11 @@ namespace RockImageUI {
     }
 
     void RockImageUI::saveTableData() {
-        auto *pixelDataTable = (PixelDataTable*) ui->dataTablesTab->currentWidget();
+        auto pixelDataTable = getCurrentDataTable();
         if (pixelDataTable == nullptr) {
             QMessageBox::warning(this,
                                  "Tabela Vazia",
-                                 "Não exitem dados a serem coletados. Mova o mouse sobre a imagem para coletar dados.");
+                                 "Não exitem dados a serem coletados.");
             return;
         }
 
@@ -77,15 +77,18 @@ namespace RockImageUI {
     }
 
     void RockImageUI::cleanTable() {
-        auto *pixelDataTable = (PixelDataTable*) ui->dataTablesTab->currentWidget();
+        auto pixelDataTable = getCurrentDataTable();
         if (pixelDataTable == nullptr) {
             QMessageBox::warning(this,
                                  "Tabela Vazia",
-                                 "Não exitem dados a serem coletados. Mova o mouse sobre a imagem para coletar dados.");
+                                 "Não exitem dados a serem coletados.");
             return;
         }
 
-        QMessageBox::StandardButton result = QMessageBox::question(this, "Limpar Tabela", "Tem certeza que deseja limpar os dados coletados na tabela?");
+        QMessageBox::StandardButton result = QMessageBox::question(
+                this,
+                "Limpar Tabela",
+                "Tem certeza que deseja limpar os dados coletados na tabela?");
         if (result == QMessageBox::No) {
             return;
         }
@@ -99,10 +102,10 @@ namespace RockImageUI {
     }
 
     void RockImageUI::loadImage(const QString& filePath) {
-        auto *listItem = new QListWidgetItem();
+        QListWidgetItem *listItem;
 
         QString fileName = filePath.section("/", -1, -1);
-        QList<QListWidgetItem *> foundItems = ui->imagesList->findItems(fileName, Qt::MatchExactly);
+        QList<QListWidgetItem*> foundItems = ui->imagesList->findItems(fileName, Qt::MatchExactly);
 
         if (foundItems.empty()) {
             listItem = new QListWidgetItem();
@@ -120,9 +123,7 @@ namespace RockImageUI {
         QString filePath = listWidgetItem->toolTip();
         QString fileName = listWidgetItem->text();
 
-
         int pixelDataTableIndex = getPixelDataTableByName(fileName);
-
         if (pixelDataTableIndex == -1) {
             auto *pixelDataTable = new PixelDataTable();
             ui->dataTablesTab->addTab(pixelDataTable, fileName);
@@ -132,7 +133,6 @@ namespace RockImageUI {
         ui->dataTablesTab->setCurrentIndex(pixelDataTableIndex);
 
         auto *subWindow = getSubWidowByName(fileName);
-
         if (subWindow == nullptr) {
             subWindow = new ImageDisplaySubWindow(filePath, fileName);
             subWindow->setAttribute(Qt::WA_DeleteOnClose);
@@ -144,27 +144,16 @@ namespace RockImageUI {
     }
 
     void RockImageUI::collectDataFromImage() {
-        auto *activeSubWindow = (ImageDisplaySubWindow*) ui->openImagesArea->currentSubWindow();
-        if (activeSubWindow == nullptr) {
-            QMessageBox::warning(this,
-                                 "Área de Trabalho Vazia",
-                                 "Não exitem dados a serem coletados. Abra uma imagem para prosseguir.");
-            return;
-        }
-
-        auto *imageDisplayWidget = activeSubWindow->getImageLabel();
+        auto *imageDisplayWidget = getCurrentSubWindowImage();
         if (imageDisplayWidget == nullptr) {
-            QMessageBox::warning(this,
-                                 "Área de Trabalho Vazia",
-                                 "Não exitem dados a serem coletados. Abra uma imagem para prosseguir.");
             return;
         }
 
-        auto *pixelDataTable = (PixelDataTable*) ui->dataTablesTab->currentWidget();
+        auto *pixelDataTable = getCurrentDataTable();
         if (pixelDataTable == nullptr) {
             QMessageBox::warning(this,
                                  "Tabela Vazia",
-                                 "Não exitem dados a serem coletados. Mova o mouse sobre a imagem para coletar dados.");
+                                 "Não exite tabela com dados a serem coletados.");
             return;
         }
 
@@ -196,6 +185,66 @@ namespace RockImageUI {
         return nullptr;
     }
 
+    void RockImageUI::closeAllWindows() {
+        ui->openImagesArea->closeAllSubWindows();
+    }
+
+    void RockImageUI::zoomIn() {
+        auto *activeSubWindow = (ImageDisplaySubWindow*) ui->openImagesArea->currentSubWindow();
+        if (activeSubWindow == nullptr) {
+            QMessageBox::warning(this,
+                                 "Área de Trabalho Vazia",
+                                 "Não existe nenhuma janela ativa no momento.");
+            return;
+        }
+
+        activeSubWindow->scaleImage(1.25);
+    }
+
+    void RockImageUI::zoomOut() {
+        auto currentSubWindow = getCurrentSubWindow();
+        if (currentSubWindow == nullptr) {
+            QMessageBox::warning(this,
+                                 "Área de Trabalho Vazia",
+                                 "Não existe nenhuma janela ativa no momento.");
+            return;
+        }
+        currentSubWindow->scaleImage(0.75);
+    }
+
+    void RockImageUI::changeTargetLabel() {
+        if (ui->changeLabelAction->isChecked()) {
+            labelData = LabelData::SOLID;
+        } else {
+            labelData = LabelData::PORE;
+        }
+
+        qDebug() << "Label: " << labelData;
+    }
+
+    ImageDisplaySubWindow *RockImageUI::getCurrentSubWindow() {
+        auto *activeSubWindow = dynamic_cast<ImageDisplaySubWindow*>(ui->openImagesArea->currentSubWindow());
+        return activeSubWindow;
+    }
+
+    PixelDataTable *RockImageUI::getCurrentDataTable() {
+        auto *pixelDataTable = dynamic_cast<PixelDataTable*>(ui->dataTablesTab->currentWidget());
+        return pixelDataTable;
+    }
+
+    ImageDisplayWidget *RockImageUI::getCurrentSubWindowImage() {
+        auto currentSubWindow = getCurrentSubWindow();
+        if (currentSubWindow == nullptr) {
+            QMessageBox::warning(this,
+                                 "Área de Trabalho Vazia",
+                                 "Não existe nenhuma janela ativa no momento com dados a serem coletados.");
+            return nullptr;
+        }
+
+        auto *imageDisplayWidget = dynamic_cast<ImageDisplayWidget*>(currentSubWindow->getImageLabel());
+        return imageDisplayWidget;
+    }
+
     void RockImageUI::createToolBar() {
         ui->toolBar->clear();
         ui->toolBar->addAction(ui->openImageAction);
@@ -221,43 +270,6 @@ namespace RockImageUI {
         ui->zoomInAction->setIcon(QIcon("../src/assets/icons/zoom-in.svg"));
         ui->zoomOutAction->setIcon(QIcon("../src/assets/icons/zoom-out.svg"));
         ui->closeAllAction->setIcon(QIcon("../src/assets/icons/close-all.svg"));
-    }
-
-    void RockImageUI::closeAllWindows() {
-        ui->openImagesArea->closeAllSubWindows();
-    }
-
-    void RockImageUI::zoomIn() {
-        auto *activeSubWindow = (ImageDisplaySubWindow*) ui->openImagesArea->currentSubWindow();
-        if (activeSubWindow == nullptr) {
-            QMessageBox::warning(this,
-                                 "Área de Trabalho Vazia",
-                                 "Não exitem dados a serem coletados. Abra uma imagem para prosseguir.");
-            return;
-        }
-
-        activeSubWindow->scaleImage(1.25);
-    }
-
-    void RockImageUI::zoomOut() {
-        auto *activeSubWindow = (ImageDisplaySubWindow*) ui->openImagesArea->currentSubWindow();
-        if (activeSubWindow == nullptr) {
-            QMessageBox::warning(this,
-                                 "Área de Trabalho Vazia",
-                                 "Não exitem dados a serem coletados. Abra uma imagem para prosseguir.");
-            return;
-        }
-        activeSubWindow->scaleImage(0.75);
-    }
-
-    void RockImageUI::changeTargetLabel() {
-        if (ui->changeLabelAction->isChecked()) {
-            labelData = LabelData::SOLID;
-        } else {
-            labelData = LabelData::PORE;
-        }
-
-        qDebug() << "Label: " << labelData;
     }
 
 } // RockImageUI

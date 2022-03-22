@@ -25,6 +25,7 @@ namespace RockImageUI {
 
     private:
         LabelData labelData {LabelData::PORE};
+        Ui::RockImageUI *ui;
 
     public:
         explicit RockImageUI(QWidget *parent = nullptr);
@@ -44,14 +45,18 @@ namespace RockImageUI {
         void changeTargetLabel();
 
     private:
+        ImageDisplaySubWindow *getSubWidowByName(const QString& name);
+
+        ImageDisplaySubWindow *getCurrentSubWindow();
+        PixelDataTable* getCurrentDataTable();
+        ImageDisplayWidget *getCurrentSubWindowImage();
+
         void loadImage(const QString& filePath);
         int getPixelDataTableByName(const QString& qString);
-        ImageDisplaySubWindow *getSubWidowByName(const QString& name);
 
         void createToolBar();
         void setActionsIcons();
 
-        Ui::RockImageUI *ui;
     };
 
 } // RockImageUI

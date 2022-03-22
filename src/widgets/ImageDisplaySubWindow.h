@@ -9,19 +9,21 @@
 
 class ImageDisplaySubWindow : public QMdiSubWindow {
 
-public:
-    ImageDisplaySubWindow(const QString& filePath, const QString& fileName);
-    [[nodiscard]] ImageDisplayWidget *getImageLabel() const;
-    bool loadImage(const QString &filePath);
-    void scaleImage(double factor);
-
 private:
     ImageDisplayWidget *imageLabel;
     QScrollArea *scrollArea;
     double scaleFactor = 1;
 
+public:
+    ImageDisplaySubWindow(const QString& filePath, const QString& fileName);
+
+    [[nodiscard]] ImageDisplayWidget *getImageLabel() const;
+
+    bool loadImage(const QString &filePath);
+    void scaleImage(double factor);
+
 private:
-    void adjustScrollBar(QScrollBar *bar, double factor);
+    static void adjustScrollBar(QScrollBar *bar, double factor);
 };
 
 

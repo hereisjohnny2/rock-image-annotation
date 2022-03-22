@@ -11,12 +11,20 @@
 #include "../../widgets/ImageDisplaySubWindow.h"
 
 namespace RockImageUI {
+    enum LabelData {
+        SOLID,
+        PORE
+    };
+
     QT_BEGIN_NAMESPACE
     namespace Ui { class RockImageUI; }
     QT_END_NAMESPACE
 
     class RockImageUI : public QMainWindow {
     Q_OBJECT
+
+    private:
+        LabelData labelData {LabelData::PORE};
 
     public:
         explicit RockImageUI(QWidget *parent = nullptr);
@@ -37,15 +45,13 @@ namespace RockImageUI {
 
     private:
         void loadImage(const QString& filePath);
+        int getPixelDataTableByName(const QString& qString);
+        ImageDisplaySubWindow *getSubWidowByName(const QString& name);
+
         void createToolBar();
         void setActionsIcons();
 
-    private:
         Ui::RockImageUI *ui;
-
-        int getPixelDataTableByName(const QString& qString);
-
-        ImageDisplaySubWindow *getSubWidowByName(const QString& name);
     };
 
 } // RockImageUI

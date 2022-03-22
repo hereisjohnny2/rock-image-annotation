@@ -170,7 +170,7 @@ namespace RockImageUI {
 
         QHash<QPoint, QRgb> pixelDataMap = imageDisplayWidget->getPixelDataMap();
         for(auto i = pixelDataMap.constBegin(); i != pixelDataMap.constEnd(); ++i) {
-            pixelDataTable->addData(i.key(), i.value(), QString("Solid"));
+            pixelDataTable->addData(i.key(), i.value(), QString::number(labelData));
         }
 
         imageDisplayWidget->clearPixelDataMap();
@@ -201,6 +201,7 @@ namespace RockImageUI {
         ui->toolBar->addAction(ui->openImageAction);
         ui->toolBar->addSeparator();
         ui->toolBar->addAction(ui->collectDataAction);
+        ui->toolBar->addAction(ui->changeLabelAction);
         ui->toolBar->addAction(ui->cleanTableAction);
         ui->toolBar->addSeparator();
         ui->toolBar->addAction(ui->zoomInAction);
@@ -235,7 +236,13 @@ namespace RockImageUI {
     }
 
     void RockImageUI::changeTargetLabel() {
-        qDebug("Change");
+        if (ui->changeLabelAction->isChecked()) {
+            labelData = LabelData::SOLID;
+        } else {
+            labelData = LabelData::PORE;
+        }
+
+        qDebug() << "Label: " << labelData;
     }
 
 } // RockImageUI

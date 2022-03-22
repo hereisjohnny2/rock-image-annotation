@@ -142,11 +142,17 @@
    </property>
   </action>
   <action name="changeLabelAction">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Alterar Label</string>
    </property>
    <property name="toolTip">
     <string>Altera a label atribuida ao dado coletado</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+;</string>
    </property>
   </action>
   <action name="zoomInAction">

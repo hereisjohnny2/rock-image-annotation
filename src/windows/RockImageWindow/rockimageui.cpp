@@ -228,11 +228,26 @@ namespace RockImageUI {
     }
 
     void RockImageUI::zoomIn() {
-        qDebug("Zoom In");
+        auto *activeSubWindow = (ImageDisplaySubWindow*) ui->openImagesArea->currentSubWindow();
+        if (activeSubWindow == nullptr) {
+            QMessageBox::warning(this,
+                                 "Área de Trabalho Vazia",
+                                 "Não exitem dados a serem coletados. Abra uma imagem para prosseguir.");
+            return;
+        }
+
+        activeSubWindow->scaleImage(1.25);
     }
 
     void RockImageUI::zoomOut() {
-        qDebug("Zoom Out");
+        auto *activeSubWindow = (ImageDisplaySubWindow*) ui->openImagesArea->currentSubWindow();
+        if (activeSubWindow == nullptr) {
+            QMessageBox::warning(this,
+                                 "Área de Trabalho Vazia",
+                                 "Não exitem dados a serem coletados. Abra uma imagem para prosseguir.");
+            return;
+        }
+        activeSubWindow->scaleImage(0.75);
     }
 
     void RockImageUI::changeTargetLabel() {

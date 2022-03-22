@@ -4,6 +4,7 @@
 #include <QDir>
 #include <QScreen>
 #include <QMouseEvent>
+#include <QScrollBar>
 
 #include "ImageDisplaySubWindow.h"
 #include "ImageDisplayWidget.h"
@@ -46,5 +47,19 @@ bool ImageDisplaySubWindow::loadImage(const QString &filePath) {
 
 ImageDisplayWidget *ImageDisplaySubWindow::getImageLabel() const {
     return imageLabel;
+}
+
+void ImageDisplaySubWindow::scaleImage(double factor) {
+    scaleFactor *= factor;
+    imageLabel->resize(scaleFactor * imageLabel->pixmap(Qt::ReturnByValue).size());
+
+    adjustScrollBar(scrollArea->horizontalScrollBar(), factor);
+    adjustScrollBar(scrollArea->verticalScrollBar(), factor);
+}
+
+void ImageDisplaySubWindow::adjustScrollBar(QScrollBar *bar, double factor) {
+    bar->setValue(int(factor * bar->value()
+                      + ((factor - 1) * bar->pageStep() / 2)));
+
 }
 

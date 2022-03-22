@@ -23,8 +23,12 @@ namespace RockImageUI {
         connect(ui->cleanTableAction, SIGNAL(triggered()), this, SLOT(cleanTable()));
         connect(ui->exitAction, &QAction::triggered, [this](){QApplication::quit();});
 
-        // Image Menu Actions
-        connect(ui->applyBinarizationAction, SIGNAL(triggered()), this, SLOT(collectDataFromImage()));
+        // ToolBar Actions
+        connect(ui->collectDataAction, SIGNAL(triggered()), this, SLOT(collectDataFromImage()));
+        connect(ui->closeAllAction, SIGNAL(triggered()), this, SLOT(closeAllWindows()));
+        connect(ui->zoomInAction, SIGNAL(triggered()), this, SLOT(zoomIn()));
+        connect(ui->zoomOutAction, SIGNAL(triggered()), this, SLOT(zoomOut()));
+        connect(ui->changeLabelAction, SIGNAL(triggered()), this, SLOT(changeTargetLabel()));
 
         createToolBar();
     }
@@ -234,6 +238,22 @@ namespace RockImageUI {
         ui->zoomInAction->setIcon(QIcon("../src/assets/icons/zoom-in.svg"));
         ui->zoomOutAction->setIcon(QIcon("../src/assets/icons/zoom-out.svg"));
         ui->closeAllAction->setIcon(QIcon("../src/assets/icons/close-all.svg"));
+    }
+
+    void RockImageUI::closeAllWindows() {
+        ui->openImagesArea->closeAllSubWindows();
+    }
+
+    void RockImageUI::zoomIn() {
+        qDebug("Zoom In");
+    }
+
+    void RockImageUI::zoomOut() {
+        qDebug("Zoom Out");
+    }
+
+    void RockImageUI::changeTargetLabel() {
+        qDebug("Change");
     }
 
 } // RockImageUI

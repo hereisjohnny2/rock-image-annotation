@@ -30,6 +30,10 @@ namespace RockImageUI {
         void applyBinarization();
         void collectDataFromImage();
         void showImage(QListWidgetItem *listWidgetItem);
+        void closeAllWindows();
+        void zoomIn();
+        void zoomOut();
+        void changeTargetLabel();
 
     private:
         void loadImage(const QString& filePath);

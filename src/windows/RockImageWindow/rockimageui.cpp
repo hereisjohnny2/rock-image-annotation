@@ -77,22 +77,6 @@ namespace RockImageUI {
     }
 
     void RockImageUI::cleanTable() {
-        auto *activeSubWindow = (ImageDisplaySubWindow*) ui->openImagesArea->currentSubWindow();
-        if (activeSubWindow == nullptr) {
-            QMessageBox::warning(this,
-                                 "Área de Trabalho Vazia",
-                                 "Não exitem dados a serem coletados. Abra uma imagem para prosseguir.");
-            return;
-        }
-
-        auto *imageDisplayWidget = activeSubWindow->getImageLabel();
-        if (imageDisplayWidget == nullptr) {
-            QMessageBox::warning(this,
-                                 "Área de Trabalho Vazia",
-                                 "Não exitem dados a serem coletados. Abra uma imagem para prosseguir.");
-            return;
-        }
-
         auto *pixelDataTable = (PixelDataTable*) ui->dataTablesTab->currentWidget();
         if (pixelDataTable == nullptr) {
             QMessageBox::warning(this,
@@ -108,8 +92,6 @@ namespace RockImageUI {
 
         pixelDataTable->clearContents();
         pixelDataTable->setRowCount(0);
-        imageDisplayWidget->clearPixelDataMap();
-
     }
 
     void RockImageUI::applyBinarization() {

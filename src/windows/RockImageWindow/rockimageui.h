@@ -52,12 +52,15 @@ namespace RockImageUI {
         PixelDataTable* getCurrentDataTable();
         ImageDisplayWidget *getCurrentSubWindowImage();
 
+        void deleteImage(const QString& name);
+
         void loadImage(const QString& filePath);
         int getPixelDataTableByName(const QString& qString);
 
         void createToolBar();
         void setActionsIcons();
 
+        bool eventFilter(QObject *obj, QEvent *event) override;
     };
 
 } // RockImageUI

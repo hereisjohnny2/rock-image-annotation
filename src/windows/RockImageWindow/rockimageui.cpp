@@ -18,6 +18,7 @@ namespace RockImageUI {
         connect(ui->exitAction, &QAction::triggered, [this](){QApplication::quit();});
 
         // ImageList Events
+        ui->imagesList->installEventFilter(this);
         connect(ui->imagesList,
                 SIGNAL(itemDoubleClicked(QListWidgetItem*)),
                 this,
@@ -282,4 +283,37 @@ namespace RockImageUI {
         ui->closeAllAction->setIcon(QIcon("../src/assets/icons/close-all.svg"));
     }
 
+    bool RockImageUI::eventFilter(QObject *obj, QEvent *event) {
+        if (event->type() == QEvent::KeyPress) {
+            auto *keyEvent = dynamic_cast<QKeyEvent *>(event);
+            if(keyEvent->key() == 16777220) {
+                showImage(ui->imagesList->currentItem());
+                return true;
+            }
+
+            if(keyEvent->key() == 16777223) {
+                int index = ui->imagesList->currentRow();
+                QString name = ui->imagesList->currentItem()->text();
+                deleteImage(name);
+                ui->imagesList->takeItem(index);
+                return true;
+            }
+
+            return false;
+        } else {
+            return QObject::eventFilter(obj, event);
+        }
+    }
+
+    void RockImageUI::deleteImage(const QString& name) {
+        auto subWindow = getSubWidowByName(name);
+        if (subWindow != nullptr) {
+            subWindow->close();
+        }
+
+        auto dataTableIndex = getPixelDataTableByName(name);
+        if (dataTableIndex > -1) {
+            ui->dataTablesTab->removeTab(dataTableIndex);
+        }
+    }
 } // RockImageUI

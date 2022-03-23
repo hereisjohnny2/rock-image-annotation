@@ -11,17 +11,27 @@ namespace RockImageUI {
 
         setActionsIcons();
 
+        // File Menu Actions
+        connect(ui->openImageAction, SIGNAL(triggered()), this, SLOT(openImage()));
+        connect(ui->saveDataAction, SIGNAL(triggered()), this, SLOT(saveTableData()));
+        connect(ui->cleanTableAction, SIGNAL(triggered()), this, SLOT(cleanTable()));
+        connect(ui->exitAction, &QAction::triggered, [this](){QApplication::quit();});
+
         // ImageList Events
         connect(ui->imagesList,
                 SIGNAL(itemDoubleClicked(QListWidgetItem*)),
                 this,
                 SLOT(showImage(QListWidgetItem*)));
 
-        // File Menu Actions
-        connect(ui->openImageAction, SIGNAL(triggered()), this, SLOT(openImage()));
-        connect(ui->saveDataAction, SIGNAL(triggered()), this, SLOT(saveTableData()));
-        connect(ui->cleanTableAction, SIGNAL(triggered()), this, SLOT(cleanTable()));
-        connect(ui->exitAction, &QAction::triggered, [this](){QApplication::quit();});
+        // Show Dock Widgets Menu
+        showImagesAction = ui->imagesListDockWidget->toggleViewAction();
+        showImagesAction->setText("Lista de Imagens");
+
+        showDataTablesAction = ui->tableTabDockWidget->toggleViewAction();
+        showDataTablesAction->setText("Tabelas de Dados");
+
+        ui->showDockMenu->addAction(showImagesAction);
+        ui->showDockMenu->addAction(showDataTablesAction);
 
         // ToolBar Actions
         connect(ui->collectDataAction, SIGNAL(triggered()), this, SLOT(collectDataFromImage()));

@@ -25,6 +25,7 @@ namespace RockImageUI {
 
     private:
         LabelData labelData {LabelData::PORE};
+        QAction *showImagesAction, *showDataTablesAction;
         Ui::RockImageUI *ui;
 
     public:

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1064</width>
+    <width>1300</width>
     <height>773</height>
    </rect>
   </property>
@@ -15,7 +15,7 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout_2">
-    <item row="0" column="1" rowspan="2">
+    <item row="0" column="0" rowspan="2" colspan="2">
      <widget class="QMdiArea" name="openImagesArea">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -25,19 +25,6 @@
       </property>
      </widget>
     </item>
-    <item row="2" column="0" colspan="2">
-     <widget class="QTabWidget" name="dataTablesTab">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-        <horstretch>0</horstretch>
-        <verstretch>2</verstretch>
-       </sizepolicy>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="0" rowspan="2">
-     <widget class="QListWidget" name="imagesList"/>
-    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -45,7 +32,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1064</width>
+     <width>1300</width>
      <height>28</height>
     </rect>
    </property>
@@ -64,8 +51,14 @@
     </property>
     <addaction name="applyBinarizationAction"/>
    </widget>
+   <widget class="QMenu" name="showDockMenu">
+    <property name="title">
+     <string>Exibir</string>
+    </property>
+   </widget>
    <addaction name="fileMenu"/>
    <addaction name="imageMenu"/>
+   <addaction name="showDockMenu"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QToolBar" name="toolBar">
@@ -85,6 +78,46 @@
     <bool>false</bool>
    </attribute>
    <addaction name="separator"/>
+  </widget>
+  <widget class="QDockWidget" name="imagesListDockWidget">
+   <property name="allowedAreas">
+    <set>Qt::AllDockWidgetAreas</set>
+   </property>
+   <property name="windowTitle">
+    <string>Lista de Imagens</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="imagesListDockWidgetContent">
+    <layout class="QGridLayout" name="gridLayout_4">
+     <item row="0" column="0">
+      <widget class="QListWidget" name="imagesList"/>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QDockWidget" name="tableTabDockWidget">
+   <property name="windowTitle">
+    <string>Tabelas de Dados</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>2</number>
+   </attribute>
+   <widget class="QWidget" name="tableTabDockWidgetContent">
+    <layout class="QGridLayout" name="gridLayout_5">
+     <item row="0" column="0">
+      <widget class="QTabWidget" name="dataTablesTab">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>1</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
   </widget>
   <action name="openImageAction">
    <property name="text">
@@ -188,6 +221,32 @@
     <string>Ctrl+X</string>
    </property>
   </action>
+  <action name="showDataTableAction">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Tabela de Dados</string>
+   </property>
+  </action>
+  <action name="showImageListAction">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Lista de Imagens</string>
+   </property>
+  </action>
+  <zorder>dockWidget_2</zorder>
+  <zorder>dockWidget</zorder>
+  <zorder>imagesListDockWidget</zorder>
+  <zorder>tableTabDockWidget</zorder>
  </widget>
  <resources>
   <include location="rockImageResources.qrc"/>

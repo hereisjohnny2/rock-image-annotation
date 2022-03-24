@@ -26,7 +26,7 @@ add_executable(
         src/widgets/ImageDisplaySubWindow.h
         src/widgets/ImageDisplayWidget.cpp
         src/widgets/ImageDisplayWidget.h
-)
+        src/windows/Dialogs/CustomMessageDialogs.cpp src/windows/Dialogs/CustomMessageDialogs.h)
 
 target_link_libraries(rock_image_cpp
         Qt::Core

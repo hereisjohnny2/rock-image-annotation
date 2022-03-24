@@ -20,6 +20,9 @@ namespace RockImageUI {
     namespace Ui { class RockImageUI; }
     QT_END_NAMESPACE
 
+    const static int ENTER_KEY_CODE = 16777220;
+    const static int DELETE_KEY_CODE = 16777223;
+
     class RockImageUI : public QMainWindow {
     Q_OBJECT
 
@@ -28,8 +31,6 @@ namespace RockImageUI {
         QAction *showImagesAction, *showDataTablesAction;
         Ui::RockImageUI *ui;
 
-        const static int ENTER_KEY_CODE = 16777220;
-        const static int DELETE_KEY_CODE = 16777223;
 
     public:
         explicit RockImageUI(QWidget *parent = nullptr);
@@ -55,6 +56,7 @@ namespace RockImageUI {
         PixelDataTable* getCurrentDataTable();
         ImageDisplayWidget *getCurrentSubWindowImage();
 
+        void deleteCurrentImage();
         void deleteImage(const QString& name);
 
         void loadImage(const QString& filePath);

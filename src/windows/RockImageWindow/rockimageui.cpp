@@ -3,6 +3,7 @@
 #include <QtWidgets>
 #include <map>
 #include <QDialog>
+#include "../Dialogs/CustomMessageDialogs.h"
 
 namespace RockImageUI {
     RockImageUI::RockImageUI(QWidget *parent) :
@@ -99,11 +100,11 @@ namespace RockImageUI {
             return;
         }
 
-        QMessageBox::StandardButton result = QMessageBox::question(
+        bool result = CustomMessageDialogs::Question(
                 this,
                 "Limpar Tabela",
                 "Tem certeza que deseja limpar os dados coletados na tabela?");
-        if (result == QMessageBox::No) {
+        if (!result) {
             return;
         }
 
@@ -298,16 +299,7 @@ namespace RockImageUI {
             }
 
             if(keyEvent->key() == DELETE_KEY_CODE) {
-                int index = ui->imagesList->currentRow();
-                QString name = ui->imagesList->currentItem()->text();
-                deleteImage(name);
-                ui->imagesList->takeItem(index);
-
-                if (ui->imagesList->currentRow() == -1) {
-                    ui->tableTabDockWidget->setVisible(false);
-                    ui->imagesListDockWidget->setVisible(false);
-                }
-
+                deleteCurrentImage();
                 return true;
             }
 
@@ -326,6 +318,27 @@ namespace RockImageUI {
         auto dataTableIndex = getPixelDataTableByName(name);
         if (dataTableIndex > -1) {
             ui->dataTablesTab->removeTab(dataTableIndex);
+        }
+    }
+
+    void RockImageUI::deleteCurrentImage() {
+        bool  result = CustomMessageDialogs::Question(
+                this,
+                "Remover Imagem",
+                "Tem certeza que deseja remover essa imagem da área da trabalho?");
+
+        if (!result) {
+            return;
+        }
+
+        int index = ui->imagesList->currentRow();
+        QString name = ui->imagesList->currentItem()->text();
+        deleteImage(name);
+        ui->imagesList->takeItem(index);
+
+        if (ui->imagesList->currentRow() == -1) {
+            ui->tableTabDockWidget->setVisible(false);
+            ui->imagesListDockWidget->setVisible(false);
         }
     }
 } // RockImageUI

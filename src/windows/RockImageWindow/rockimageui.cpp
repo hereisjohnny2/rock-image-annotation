@@ -25,6 +25,9 @@ namespace RockImageUI {
                 SLOT(showImage(QListWidgetItem*)));
 
         // Show Dock Widgets Menu
+        ui->tableTabDockWidget->setVisible(false);
+        ui->imagesListDockWidget->setVisible(false);
+
         showImagesAction = ui->imagesListDockWidget->toggleViewAction();
         showImagesAction->setText("Lista de Imagens");
 
@@ -126,6 +129,9 @@ namespace RockImageUI {
         } else {
             listItem = foundItems[0];
         }
+
+        ui->imagesListDockWidget->setVisible(true);
+        ui->tableTabDockWidget->setVisible(true);
 
         showImage(listItem);
     }
@@ -286,16 +292,22 @@ namespace RockImageUI {
     bool RockImageUI::eventFilter(QObject *obj, QEvent *event) {
         if (event->type() == QEvent::KeyPress) {
             auto *keyEvent = dynamic_cast<QKeyEvent *>(event);
-            if(keyEvent->key() == 16777220) {
+            if(keyEvent->key() == ENTER_KEY_CODE) {
                 showImage(ui->imagesList->currentItem());
                 return true;
             }
 
-            if(keyEvent->key() == 16777223) {
+            if(keyEvent->key() == DELETE_KEY_CODE) {
                 int index = ui->imagesList->currentRow();
                 QString name = ui->imagesList->currentItem()->text();
                 deleteImage(name);
                 ui->imagesList->takeItem(index);
+
+                if (ui->imagesList->currentRow() == -1) {
+                    ui->tableTabDockWidget->setVisible(false);
+                    ui->imagesListDockWidget->setVisible(false);
+                }
+
                 return true;
             }
 

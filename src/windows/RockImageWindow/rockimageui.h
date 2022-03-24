@@ -28,6 +28,9 @@ namespace RockImageUI {
         QAction *showImagesAction, *showDataTablesAction;
         Ui::RockImageUI *ui;
 
+        const static int ENTER_KEY_CODE = 16777220;
+        const static int DELETE_KEY_CODE = 16777223;
+
     public:
         explicit RockImageUI(QWidget *parent = nullptr);
 

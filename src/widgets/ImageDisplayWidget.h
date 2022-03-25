@@ -1,7 +1,3 @@
-//
-// Created by joao on 19/03/2022.
-//
-
 #ifndef ROCK_IMAGE_CPP_IMAGEDISPLAYWIDGET_H
 #define ROCK_IMAGE_CPP_IMAGEDISPLAYWIDGET_H
 
@@ -14,17 +10,25 @@ class ImageDisplayWidget : public QLabel {
 private:
     QImage image;
     QHash<QPoint, QRgb> pixelDataMap{};
+    QPoint lastPoint;
 
 public:
     ImageDisplayWidget();
-
     void setImage(const QImage &newImage);
-
     [[nodiscard]] const QImage &getImage() const;
     [[nodiscard]] const QHash<QPoint, QRgb> &getPixelDataMap() const;
     void clearPixelDataMap();
 
-    void mouseMoveEvent(QMouseEvent *mouseEvent) override;
+protected:
+    void mousePressEvent(QMouseEvent *event) override;
+    void mouseMoveEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
+    void paintEvent(QPaintEvent *event) override;
+
+private:
+    void drawLineTo(const QPoint &endPoint);
+
+
 };
 
 

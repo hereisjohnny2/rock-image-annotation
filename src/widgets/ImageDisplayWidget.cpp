@@ -1,4 +1,5 @@
 #include <QMouseEvent>
+#include <QPainter>
 #include "ImageDisplayWidget.h"
 
 ImageDisplayWidget::ImageDisplayWidget() {
@@ -7,15 +8,30 @@ ImageDisplayWidget::ImageDisplayWidget() {
     setScaledContents(true);
 }
 
-void ImageDisplayWidget::mouseMoveEvent(QMouseEvent *mouseEvent) {
-    QPoint currentPoint = mouseEvent->pos();
+void ImageDisplayWidget::mousePressEvent(QMouseEvent *event) {
+    if (event->button() == Qt::LeftButton) {
+        lastPoint = event->pos();
+    }
+}
+
+void ImageDisplayWidget::mouseMoveEvent(QMouseEvent *event) {
+    QPoint currentPoint = event->pos();
     QRgb rgb = QColor(image.pixel(currentPoint)).rgb();
     pixelDataMap.insert(currentPoint, rgb);
+    drawLineTo(event->pos());
+}
+
+
+void ImageDisplayWidget::mouseReleaseEvent(QMouseEvent *event) {
+    if (event->button() == Qt::LeftButton) {
+        drawLineTo(event->pos());
+    }
 }
 
 void ImageDisplayWidget::setImage(const QImage &newImage) {
     image = newImage;
-    setPixmap(QPixmap::fromImage(image));
+    QPixmap p = QPixmap::fromImage(image);
+    setPixmap(p);
     adjustSize();
 }
 
@@ -30,5 +46,20 @@ const QHash<QPoint, QRgb> &ImageDisplayWidget::getPixelDataMap() const {
 void ImageDisplayWidget::clearPixelDataMap() {
     pixelDataMap = {};
 }
+
+void ImageDisplayWidget::drawLineTo(const QPoint &endPoint) {
+    QPainter painter(&image);
+    painter.setPen(QPen(Qt::blue, 10, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+    painter.drawLine(lastPoint, endPoint);
+    update();
+    lastPoint = endPoint;
+}
+
+void ImageDisplayWidget::paintEvent(QPaintEvent *event) {
+    QPainter painter(this);
+    painter.setRenderHint(QPainter::Antialiasing, false);
+    painter.drawImage(QPoint(0,0), image);
+}
+
 
 

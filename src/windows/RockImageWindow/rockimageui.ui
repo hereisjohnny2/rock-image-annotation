@@ -13,9 +13,15 @@
   <property name="windowTitle">
    <string>RockImage</string>
   </property>
+  <property name="dockNestingEnabled">
+   <bool>false</bool>
+  </property>
+  <property name="dockOptions">
+   <set>QMainWindow::AllowTabbedDocks|QMainWindow::AnimatedDocks</set>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout_2">
-    <item row="0" column="0" rowspan="2" colspan="2">
+    <item row="0" column="1">
      <widget class="QMdiArea" name="openImagesArea">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -79,6 +85,9 @@
    <addaction name="separator"/>
   </widget>
   <widget class="QDockWidget" name="imagesListDockWidget">
+   <property name="floating">
+    <bool>false</bool>
+   </property>
    <property name="allowedAreas">
     <set>Qt::AllDockWidgetAreas</set>
    </property>
@@ -92,6 +101,9 @@
     <layout class="QGridLayout" name="gridLayout_4">
      <item row="0" column="0">
       <widget class="QListWidget" name="imagesList"/>
+     </item>
+     <item row="1" column="0">
+      <widget class="QTreeView" name="imagesTreeView"/>
      </item>
     </layout>
    </widget>
@@ -112,6 +124,9 @@
          <horstretch>0</horstretch>
          <verstretch>1</verstretch>
         </sizepolicy>
+       </property>
+       <property name="tabsClosable">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
@@ -242,13 +257,9 @@
     <string>Lista de Imagens</string>
    </property>
   </action>
-  <zorder>dockWidget_2</zorder>
-  <zorder>dockWidget</zorder>
-  <zorder>imagesListDockWidget</zorder>
   <zorder>tableTabDockWidget</zorder>
+  <zorder>imagesListDockWidget</zorder>
  </widget>
- <resources>
-  <include location="rockImageResources.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

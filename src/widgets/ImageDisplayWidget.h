@@ -9,12 +9,14 @@
 class ImageDisplayWidget : public QLabel {
 private:
     QImage image;
+    QImage compositeImage;
     QHash<QPoint, QRgb> pixelDataMap{};
     QPoint lastPoint;
     QString label = "layer";
 
 private:
     void drawLineTo(const QPoint &endPoint);
+    QImage createImageWithOverlay();
 
 public:
     ImageDisplayWidget();

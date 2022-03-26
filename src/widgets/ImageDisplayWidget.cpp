@@ -30,7 +30,8 @@ void ImageDisplayWidget::mouseReleaseEvent(QMouseEvent *event) {
 
 void ImageDisplayWidget::setImage(const QImage &newImage) {
     image = newImage;
-    QPixmap p = QPixmap::fromImage(image);
+    compositeImage = createImageWithOverlay();
+    QPixmap p = QPixmap::fromImage(compositeImage);
     setPixmap(p);
     adjustSize();
 }
@@ -48,17 +49,19 @@ void ImageDisplayWidget::clearPixelDataMap() {
 }
 
 void ImageDisplayWidget::drawLineTo(const QPoint &endPoint) {
-    QPainter painter(&image);
+    QPainter painter(&compositeImage);
     painter.setPen(QPen(Qt::blue, 10, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
     painter.drawLine(lastPoint, endPoint);
-    update();
+    int rad = (10 / 2) + 2;
+    update(QRect(lastPoint, endPoint).normalized()
+                   .adjusted(-rad, -rad, +rad, +rad));
     lastPoint = endPoint;
 }
 
 void ImageDisplayWidget::paintEvent(QPaintEvent *event) {
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing, false);
-    painter.drawImage(QPoint(0,0), image);
+    painter.drawImage(QPoint(0,0), compositeImage);
 }
 
 const QString &ImageDisplayWidget::getLabel() const {
@@ -67,6 +70,24 @@ const QString &ImageDisplayWidget::getLabel() const {
 
 void ImageDisplayWidget::setLabel(const QString &name) {
     ImageDisplayWidget::label = name;
+}
+
+QImage ImageDisplayWidget::createImageWithOverlay() {
+    QImage imageWithOverlay = QImage(image.size(), QImage::Format_RGB16);
+    QPainter painter(&imageWithOverlay);
+
+    painter.setCompositionMode(QPainter::CompositionMode_Source);
+    painter.fillRect(imageWithOverlay.rect(), Qt::transparent);
+
+    painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+    painter.drawImage(0, 0, image);
+
+    painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+    painter.drawImage(0, 0, image.createAlphaMask());
+
+    painter.end();
+
+    return imageWithOverlay;
 }
 
 

@@ -18,6 +18,10 @@ namespace RockImageUI {
         connect(ui->cleanTableAction, SIGNAL(triggered()), this, SLOT(cleanTable()));
         connect(ui->exitAction, &QAction::triggered, [this](){QApplication::quit();});
 
+        // Images Menu Actions
+        connect(ui->addLayerAction, SIGNAL(triggered()), this, SLOT(addLayer()));
+        connect(ui->removeLayerAction, SIGNAL(triggered()), this, SLOT(removeLayer()));
+
         // ImageList Events
         ui->imagesList->installEventFilter(this);
         connect(ui->imagesList,
@@ -342,5 +346,17 @@ namespace RockImageUI {
             ui->tableTabDockWidget->setVisible(false);
             ui->imagesListDockWidget->setVisible(false);
         }
+    }
+
+    void RockImageUI::addLayer() {
+        auto window = getCurrentSubWindow();
+        if (window == nullptr) return;
+        window->addNewLayer();
+    }
+
+    void RockImageUI::removeLayer() {
+        auto window = getCurrentSubWindow();
+        if (window == nullptr) return;
+        window->removeCurrentLayer();
     }
 } // RockImageUI

@@ -68,6 +68,15 @@ void ImageDisplaySubWindow::adjustScrollBar(QScrollBar *bar, double factor) {
 }
 
 void ImageDisplaySubWindow::addNewLayer() {
+    auto layer = new ImageDisplayWidget();
+    auto baseImage = stackedImagesWidget->getImages()[0]->getImage();
+    auto image = QImage(baseImage.size(), baseImage.format());
+    image.fill(QColor(255, 255, 0, 255));
+    layer->setImage(image);
+    stackedImagesWidget->addLayer(layer);
+}
 
+void ImageDisplaySubWindow::removeCurrentLayer() {
+    stackedImagesWidget->removeLayer();
 }
 

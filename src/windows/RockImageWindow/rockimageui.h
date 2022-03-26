@@ -48,6 +48,8 @@ namespace RockImageUI {
         void zoomIn();
         void zoomOut();
         void changeTargetLabel();
+        void addLayer();
+        void removeLayer();
 
     private:
         ImageDisplaySubWindow *getSubWidowByName(const QString& name);

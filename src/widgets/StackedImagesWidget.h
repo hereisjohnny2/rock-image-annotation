@@ -8,18 +8,20 @@
 
 #include <QLabel>
 #include <QStackedLayout>
+#include <QStack>
 #include "ImageDisplayWidget.h"
 
 class StackedImagesWidget : public QVBoxLayout  {
 private:
     QStackedLayout *stackedLayout;
-    QList<ImageDisplayWidget *> layers;
+    QStack<ImageDisplayWidget *> layers;
 
 public:
     StackedImagesWidget();
-    [[nodiscard]] QList<ImageDisplayWidget *> getImages() const;
+    [[nodiscard]] QStack<ImageDisplayWidget *> getImages() const;
     [[nodiscard]] ImageDisplayWidget * getImageByName(const QString &name) const;
     void addLayer(ImageDisplayWidget *layer);
+    void removeLayer();
     void scaleImage(double factor);
 };
 

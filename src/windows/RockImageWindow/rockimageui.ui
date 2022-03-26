@@ -56,6 +56,8 @@
      <string>Imagem</string>
     </property>
     <addaction name="applyBinarizationAction"/>
+    <addaction name="addLayerAction"/>
+    <addaction name="removeLayerAction"/>
    </widget>
    <widget class="QMenu" name="showDockMenu">
     <property name="title">
@@ -101,9 +103,6 @@
     <layout class="QGridLayout" name="gridLayout_4">
      <item row="0" column="0">
       <widget class="QListWidget" name="imagesList"/>
-     </item>
-     <item row="1" column="0">
-      <widget class="QTreeView" name="imagesTreeView"/>
      </item>
     </layout>
    </widget>
@@ -255,6 +254,16 @@
    </property>
    <property name="text">
     <string>Lista de Imagens</string>
+   </property>
+  </action>
+  <action name="addLayerAction">
+   <property name="text">
+    <string>Adicionar Camada</string>
+   </property>
+  </action>
+  <action name="removeLayerAction">
+   <property name="text">
+    <string>Remover Camanda</string>
    </property>
   </action>
   <zorder>tableTabDockWidget</zorder>

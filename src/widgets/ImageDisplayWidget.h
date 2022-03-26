@@ -11,12 +11,18 @@ private:
     QImage image;
     QHash<QPoint, QRgb> pixelDataMap{};
     QPoint lastPoint;
+    QString name = "layer";
+
+private:
+    void drawLineTo(const QPoint &endPoint);
 
 public:
     ImageDisplayWidget();
     void setImage(const QImage &newImage);
     [[nodiscard]] const QImage &getImage() const;
     [[nodiscard]] const QHash<QPoint, QRgb> &getPixelDataMap() const;
+    [[nodiscard]] const QString &getName() const;
+    void setName(const QString &name);
     void clearPixelDataMap();
 
 protected:
@@ -24,11 +30,6 @@ protected:
     void mouseMoveEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;
     void paintEvent(QPaintEvent *event) override;
-
-private:
-    void drawLineTo(const QPoint &endPoint);
-
-
 };
 
 

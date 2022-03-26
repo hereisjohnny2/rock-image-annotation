@@ -6,24 +6,22 @@
 #include <QLabel>
 #include <QScrollArea>
 #include "ImageDisplayWidget.h"
+#include "StackedImagesWidget.h"
 
 class ImageDisplaySubWindow : public QMdiSubWindow {
 
 private:
-    ImageDisplayWidget *imageLabel;
+    StackedImagesWidget *stackedImagesWidget;
     QScrollArea *scrollArea;
     double scaleFactor = 1;
+    static void adjustScrollBar(QScrollBar *bar, double factor);
 
 public:
     ImageDisplaySubWindow(const QString& filePath, const QString& fileName);
-
     [[nodiscard]] ImageDisplayWidget *getImageLabel() const;
-
     bool loadImage(const QString &filePath);
     void scaleImage(double factor);
-
-private:
-    static void adjustScrollBar(QScrollBar *bar, double factor);
+    void addNewLayer();
 };
 
 

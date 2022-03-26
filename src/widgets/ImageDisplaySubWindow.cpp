@@ -10,12 +10,12 @@
 #include "ImageDisplayWidget.h"
 
 ImageDisplaySubWindow::ImageDisplaySubWindow(const QString& filePath, const QString& fileName)
-    : imageLabel(new ImageDisplayWidget()), scrollArea(new QScrollArea())
+    : stackedImagesWidget(new StackedImagesWidget()), scrollArea(new QScrollArea())
 {
     this->setWindowTitle(fileName);
 
     scrollArea->setBackgroundRole(QPalette::Dark);
-    scrollArea->setWidget(imageLabel);
+    scrollArea->setLayout(stackedImagesWidget);
     scrollArea->setVisible(false);
 
     this->setWidget(scrollArea);
@@ -37,7 +37,11 @@ bool ImageDisplaySubWindow::loadImage(const QString &filePath) {
         return false;
     }
 
-    imageLabel->setImage(newImage);
+    auto *layer = new ImageDisplayWidget();
+    layer->setImage(newImage);
+    layer->setName("baseImage");
+
+    stackedImagesWidget->addLayer(layer);
 
     scaleFactor = 1.0;
     scrollArea->setVisible(true);
@@ -46,12 +50,12 @@ bool ImageDisplaySubWindow::loadImage(const QString &filePath) {
 }
 
 ImageDisplayWidget *ImageDisplaySubWindow::getImageLabel() const {
-    return imageLabel;
+    return stackedImagesWidget->getImageByName("baseImage");
 }
 
 void ImageDisplaySubWindow::scaleImage(double factor) {
     scaleFactor *= factor;
-    imageLabel->resize(scaleFactor * imageLabel->pixmap(Qt::ReturnByValue).size());
+    stackedImagesWidget->scaleImage(scaleFactor);
 
     adjustScrollBar(scrollArea->horizontalScrollBar(), factor);
     adjustScrollBar(scrollArea->verticalScrollBar(), factor);
@@ -60,6 +64,10 @@ void ImageDisplaySubWindow::scaleImage(double factor) {
 void ImageDisplaySubWindow::adjustScrollBar(QScrollBar *bar, double factor) {
     bar->setValue(int(factor * bar->value()
                       + ((factor - 1) * bar->pageStep() / 2)));
+
+}
+
+void ImageDisplaySubWindow::addNewLayer() {
 
 }
 

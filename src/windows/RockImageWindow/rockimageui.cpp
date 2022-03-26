@@ -57,8 +57,8 @@ namespace RockImageUI {
     }
 
     void RockImageUI::openImage() {
-        QString fileName = QFileDialog::getOpenFileName(
-                this, tr("Abrir Imagem"), QDir::currentPath());
+        QString fileName = QFileDialog::getOpenFileName(this, tr("Abrir Imagem"), QDir::homePath());
+
         if (fileName.isEmpty()) {
             QMessageBox::critical(this, "Error", "Não foi possível abrir a imagem selecionada.");
             return;
@@ -77,7 +77,7 @@ namespace RockImageUI {
         }
 
         QString fileName = QFileDialog::getSaveFileName(
-                this, tr("Salvar Dados"), QDir::currentPath());
+                this, tr("Salvar Dados"), QDir::homePath());
         QFile file(fileName);
 
         if (!file.open(QIODevice::WriteOnly | QFile::Text)) {

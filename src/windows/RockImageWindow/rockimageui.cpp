@@ -147,7 +147,7 @@ namespace RockImageUI {
         QString filePath = listWidgetItem->toolTip();
         QString fileName = listWidgetItem->text();
 
-        int pixelDataTableIndex = getPixelDataTableByName(fileName);
+        auto pixelDataTableIndex = getPixelDataIndexTableByName(fileName);
         if (pixelDataTableIndex == -1) {
             auto *pixelDataTable = new PixelDataTable();
             ui->dataTablesTab->addTab(pixelDataTable, fileName);
@@ -168,18 +168,25 @@ namespace RockImageUI {
     }
 
     void RockImageUI::collectDataFromImage() {
-        auto *imageDisplayWidget = getCurrentSubWindowTopLayerImage();
+        auto window = getCurrentSubWindow();
+        if (window == nullptr) {
+            return;
+        }
+
+        auto *imageDisplayWidget = window->getTopLayerImage();
         if (imageDisplayWidget == nullptr) {
             return;
         }
 
-        auto *pixelDataTable = getCurrentDataTable();
+        auto pixelDataTable = getPixelDataTableByName(window->windowTitle());
         if (pixelDataTable == nullptr) {
             QMessageBox::warning(this,
                                  "Tabela Vazia",
                                  "Não exite tabela com dados a serem coletados.");
             return;
         }
+
+        ui->dataTablesTab->setCurrentWidget(pixelDataTable);
 
         QHash<QPoint, QRgb> pixelDataMap = imageDisplayWidget->getPixelDataMap();
         for(auto i = pixelDataMap.constBegin(); i != pixelDataMap.constEnd(); ++i) {
@@ -189,20 +196,20 @@ namespace RockImageUI {
         imageDisplayWidget->clearPixelDataMap();
     }
 
-    int RockImageUI::getPixelDataTableByName(const QString& name) {
+    PixelDataTable* RockImageUI::getPixelDataTableByName(const QString& name) {
         for (int i = 0; i < ui->dataTablesTab->count(); ++i) {
             if (ui->dataTablesTab->tabText(i) == name) {
-                return i;
+                return dynamic_cast<PixelDataTable *>(ui->dataTablesTab->widget(i));
             }
         }
 
-        return -1;
+        return nullptr;
     }
 
     ImageDisplaySubWindow *RockImageUI::getSubWidowByName(const QString& name) {
         for (auto &subWindow : ui->openImagesArea->subWindowList()) {
             if (subWindow->windowTitle() == name) {
-                return (ImageDisplaySubWindow*) subWindow;
+                return dynamic_cast<ImageDisplaySubWindow *>(subWindow);
             }
         }
 
@@ -321,7 +328,7 @@ namespace RockImageUI {
             subWindow->close();
         }
 
-        auto dataTableIndex = getPixelDataTableByName(name);
+        auto dataTableIndex = getPixelDataIndexTableByName(name);
         if (dataTableIndex > -1) {
             ui->dataTablesTab->removeTab(dataTableIndex);
         }
@@ -366,5 +373,11 @@ namespace RockImageUI {
         auto window = getCurrentSubWindow();
         if (window == nullptr) return;
         window->removeCurrentLayer();
+    }
+
+    int RockImageUI::getPixelDataIndexTableByName(const QString &name) {
+        auto table = getPixelDataTableByName(name);
+        if (table == nullptr) return -1;
+        return ui->dataTablesTab->indexOf(table);
     }
 } // RockImageUI

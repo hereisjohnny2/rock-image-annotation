@@ -53,20 +53,16 @@ namespace RockImageUI {
 
     private:
         ImageDisplaySubWindow *getSubWidowByName(const QString& name);
-
         ImageDisplaySubWindow *getCurrentSubWindow();
         PixelDataTable* getCurrentDataTable();
+        PixelDataTable*  getPixelDataTableByName(const QString& name);
+        int  getPixelDataIndexTableByName(const QString& name);
         ImageDisplayWidget *getCurrentSubWindowTopLayerImage();
-
         void deleteCurrentImage();
         void deleteImage(const QString& name);
-
         void loadImage(const QString& filePath);
-        int getPixelDataTableByName(const QString& qString);
-
         void createToolBar();
         void setActionsIcons();
-
         bool eventFilter(QObject *obj, QEvent *event) override;
     };
 

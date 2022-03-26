@@ -57,10 +57,11 @@ namespace RockImageUI {
     }
 
     void RockImageUI::openImage() {
-        QString fileName = QFileDialog::getOpenFileName(this, tr("Abrir Imagem"), QDir::homePath());
+        QString fileName = QFileDialog::getOpenFileName(this, tr("Abrir Imagem"), QDir::homePath(), tr("Image Files (*.png *.jpg *.bmp)"));
+        QFile file(fileName);
 
-        if (fileName.isEmpty()) {
-            QMessageBox::critical(this, "Error", "Não foi possível abrir a imagem selecionada.");
+        if (!file.exists()) {
+            QMessageBox::warning(this, "Error", "Não foi possível abrir a imagem selecionada.");
             return;
         }
 

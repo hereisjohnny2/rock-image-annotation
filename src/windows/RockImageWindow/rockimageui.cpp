@@ -168,7 +168,7 @@ namespace RockImageUI {
     }
 
     void RockImageUI::collectDataFromImage() {
-        auto *imageDisplayWidget = getCurrentSubWindowImage();
+        auto *imageDisplayWidget = getCurrentSubWindowTopLayerImage();
         if (imageDisplayWidget == nullptr) {
             return;
         }
@@ -183,7 +183,7 @@ namespace RockImageUI {
 
         QHash<QPoint, QRgb> pixelDataMap = imageDisplayWidget->getPixelDataMap();
         for(auto i = pixelDataMap.constBegin(); i != pixelDataMap.constEnd(); ++i) {
-            pixelDataTable->addData(i.key(), i.value(), QString::number(labelData));
+            pixelDataTable->addData(i.key(), i.value(), imageDisplayWidget->getLabel());
         }
 
         imageDisplayWidget->clearPixelDataMap();
@@ -256,7 +256,7 @@ namespace RockImageUI {
         return pixelDataTable;
     }
 
-    ImageDisplayWidget *RockImageUI::getCurrentSubWindowImage() {
+    ImageDisplayWidget *RockImageUI::getCurrentSubWindowTopLayerImage() {
         auto currentSubWindow = getCurrentSubWindow();
         if (currentSubWindow == nullptr) {
             QMessageBox::warning(this,
@@ -265,7 +265,7 @@ namespace RockImageUI {
             return nullptr;
         }
 
-        auto *imageDisplayWidget = dynamic_cast<ImageDisplayWidget*>(currentSubWindow->getImageLabel());
+        auto *imageDisplayWidget = dynamic_cast<ImageDisplayWidget*>(currentSubWindow->getTopLayerImage());
         return imageDisplayWidget;
     }
 
@@ -351,7 +351,15 @@ namespace RockImageUI {
     void RockImageUI::addLayer() {
         auto window = getCurrentSubWindow();
         if (window == nullptr) return;
-        window->addNewLayer();
+
+        bool isOk;
+        QString label = QInputDialog::getText(this, tr("Adicionar Camada"), tr("Label:"), QLineEdit::Normal, QDir::home().dirName(), &isOk);
+        if (!isOk or label.isEmpty()) {
+            QMessageBox::warning(this, tr("Adicionar Camada"), tr("Toda camada deve possuir uma label."));
+            return;
+        }
+
+        window->addNewLayer(label);
     }
 
     void RockImageUI::removeLayer() {

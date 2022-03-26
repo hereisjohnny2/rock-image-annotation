@@ -12,7 +12,7 @@ QStack<ImageDisplayWidget *> StackedImagesWidget::getImages() const {
 
 ImageDisplayWidget *StackedImagesWidget::getImageByName(const QString &name) const {
     auto layer = std::find_if(layers.begin(), layers.end(), [&](ImageDisplayWidget* item) {
-        return name == item->getName();
+        return name == item->getLabel();
     });
 
     return *layer;

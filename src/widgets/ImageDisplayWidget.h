@@ -11,7 +11,7 @@ private:
     QImage image;
     QHash<QPoint, QRgb> pixelDataMap{};
     QPoint lastPoint;
-    QString name = "layer";
+    QString label = "layer";
 
 private:
     void drawLineTo(const QPoint &endPoint);
@@ -21,8 +21,8 @@ public:
     void setImage(const QImage &newImage);
     [[nodiscard]] const QImage &getImage() const;
     [[nodiscard]] const QHash<QPoint, QRgb> &getPixelDataMap() const;
-    [[nodiscard]] const QString &getName() const;
-    void setName(const QString &name);
+    [[nodiscard]] const QString &getLabel() const;
+    void setLabel(const QString &name);
     void clearPixelDataMap();
 
 protected:

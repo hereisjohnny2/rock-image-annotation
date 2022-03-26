@@ -56,7 +56,7 @@ namespace RockImageUI {
 
         ImageDisplaySubWindow *getCurrentSubWindow();
         PixelDataTable* getCurrentDataTable();
-        ImageDisplayWidget *getCurrentSubWindowImage();
+        ImageDisplayWidget *getCurrentSubWindowTopLayerImage();
 
         void deleteCurrentImage();
         void deleteImage(const QString& name);

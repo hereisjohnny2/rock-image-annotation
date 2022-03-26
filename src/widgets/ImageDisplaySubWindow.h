@@ -18,10 +18,10 @@ private:
 
 public:
     ImageDisplaySubWindow(const QString& filePath, const QString& fileName);
-    [[nodiscard]] ImageDisplayWidget *getImageLabel() const;
+    [[nodiscard]] ImageDisplayWidget *getTopLayerImage() const;
     bool loadImage(const QString &filePath);
     void scaleImage(double factor);
-    void addNewLayer();
+    void addNewLayer(const QString& label);
     void removeCurrentLayer();
 };
 

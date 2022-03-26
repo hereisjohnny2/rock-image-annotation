@@ -40,7 +40,7 @@ bool ImageDisplaySubWindow::loadImage(const QString &filePath) {
 
     auto *layer = new ImageDisplayWidget();
     layer->setImage(newImage);
-    layer->setName("baseImage");
+    layer->setLabel("baseImage");
 
     stackedImagesWidget->addLayer(layer);
 
@@ -50,8 +50,8 @@ bool ImageDisplaySubWindow::loadImage(const QString &filePath) {
     return true;
 }
 
-ImageDisplayWidget *ImageDisplaySubWindow::getImageLabel() const {
-    return stackedImagesWidget->getImageByName("baseImage");
+ImageDisplayWidget *ImageDisplaySubWindow::getTopLayerImage() const {
+    return stackedImagesWidget->getImages().top();
 }
 
 void ImageDisplaySubWindow::scaleImage(double factor) {
@@ -68,9 +68,10 @@ void ImageDisplaySubWindow::adjustScrollBar(QScrollBar *bar, double factor) {
 
 }
 
-void ImageDisplaySubWindow::addNewLayer() {
+void ImageDisplaySubWindow::addNewLayer(const QString& label) {
     auto layer = new ImageDisplayWidget();
     auto baseImage = stackedImagesWidget->getImages().top()->getImage();
+    layer->setLabel(label);
     layer->setImage(baseImage);
     stackedImagesWidget->addLayer(layer);
 }

@@ -61,12 +61,12 @@ void ImageDisplayWidget::paintEvent(QPaintEvent *event) {
     painter.drawImage(QPoint(0,0), image);
 }
 
-const QString &ImageDisplayWidget::getName() const {
-    return name;
+const QString &ImageDisplayWidget::getLabel() const {
+    return label;
 }
 
-void ImageDisplayWidget::setName(const QString &newName) {
-    ImageDisplayWidget::name = newName;
+void ImageDisplayWidget::setLabel(const QString &name) {
+    ImageDisplayWidget::label = name;
 }
 
 

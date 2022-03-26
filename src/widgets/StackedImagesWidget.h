@@ -1,10 +1,5 @@
-//
-// Created by joao on 26/03/2022.
-//
-
 #ifndef ROCK_IMAGE_CPP_STACKEDIMAGESWIDGET_H
 #define ROCK_IMAGE_CPP_STACKEDIMAGESWIDGET_H
-
 
 #include <QLabel>
 #include <QStackedLayout>
@@ -22,7 +17,7 @@ public:
     [[nodiscard]] ImageDisplayWidget * getImageByName(const QString &name) const;
     void addLayer(ImageDisplayWidget *layer);
     void removeLayer();
-    void scaleImage(double factor);
+    void scaleImage(double factor) const;
 };
 
 

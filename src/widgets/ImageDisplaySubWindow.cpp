@@ -5,6 +5,7 @@
 #include <QScreen>
 #include <QMouseEvent>
 #include <QScrollBar>
+#include <QPainter>
 
 #include "ImageDisplaySubWindow.h"
 #include "ImageDisplayWidget.h"
@@ -69,10 +70,8 @@ void ImageDisplaySubWindow::adjustScrollBar(QScrollBar *bar, double factor) {
 
 void ImageDisplaySubWindow::addNewLayer() {
     auto layer = new ImageDisplayWidget();
-    auto baseImage = stackedImagesWidget->getImages()[0]->getImage();
-    auto image = QImage(baseImage.size(), baseImage.format());
-    image.fill(QColor(255, 255, 0, 255));
-    layer->setImage(image);
+    auto baseImage = stackedImagesWidget->getImages().top()->getImage();
+    layer->setImage(baseImage);
     stackedImagesWidget->addLayer(layer);
 }
 

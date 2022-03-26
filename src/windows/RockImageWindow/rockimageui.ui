@@ -104,6 +104,20 @@
      <item row="0" column="0">
       <widget class="QListWidget" name="imagesList"/>
      </item>
+     <item row="1" column="0">
+      <widget class="QTreeWidget" name="imageTree">
+       <column>
+        <property name="text">
+         <string>Nome</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Cor</string>
+        </property>
+       </column>
+      </widget>
+     </item>
     </layout>
    </widget>
   </widget>

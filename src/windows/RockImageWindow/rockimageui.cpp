@@ -29,6 +29,13 @@ namespace RockImageUI {
                 this,
                 SLOT(showImage(QListWidgetItem*)));
 
+        // ImageTree Events
+        ui->imageTree->installEventFilter(this);
+        connect(ui->imageTree,
+                SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)),
+                this,
+                SLOT(showLayer(QTreeWidgetItem*,int)));
+
         // Show Dock Widgets Menu
         ui->tableTabDockWidget->setVisible(false);
         ui->imagesListDockWidget->setVisible(false);
@@ -147,6 +154,10 @@ namespace RockImageUI {
     void RockImageUI::showImage(QListWidgetItem *listWidgetItem) {
         QString filePath = listWidgetItem->toolTip();
         QString fileName = listWidgetItem->text();
+
+        auto treeItem = new QTreeWidgetItem();
+        treeItem->setText(0, fileName);
+        ui->imageTree->addTopLevelItem(treeItem);
 
         auto pixelDataTableIndex = getPixelDataIndexTableByName(fileName);
         if (pixelDataTableIndex == -1) {
@@ -350,6 +361,10 @@ namespace RockImageUI {
         deleteImage(name);
         ui->imagesList->takeItem(index);
 
+        auto node = ui->imageTree->findItems(name, Qt::MatchExactly)[0];
+        auto nodeIndex = ui->imageTree->indexOfTopLevelItem(node);
+        ui->imageTree->takeTopLevelItem(index);
+
         if (ui->imagesList->currentRow() == -1) {
             ui->tableTabDockWidget->setVisible(false);
             ui->imagesListDockWidget->setVisible(false);
@@ -368,6 +383,11 @@ namespace RockImageUI {
         }
 
         window->addNewLayer(label);
+
+        auto layerTreeItem = new QTreeWidgetItem();
+        layerTreeItem->setText(0, label);
+        auto node = ui->imageTree->findItems(window->windowTitle(), Qt::MatchExactly)[0];
+        node->addChild(layerTreeItem);
     }
 
     void RockImageUI::removeLayer() {
@@ -380,5 +400,13 @@ namespace RockImageUI {
         auto table = getPixelDataTableByName(name);
         if (table == nullptr) return -1;
         return ui->dataTablesTab->indexOf(table);
+    }
+
+    void RockImageUI::showLayer(QTreeWidgetItem *treeWidgetItem, int column) {
+        QString name = treeWidgetItem->text(column);
+        QString subWindowName = treeWidgetItem->parent()->text(0);
+
+        auto subWindow = getSubWidowByName(subWindowName);
+        subWindow->showLayer(name);
     }
 } // RockImageUI

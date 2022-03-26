@@ -80,3 +80,7 @@ void ImageDisplaySubWindow::removeCurrentLayer() {
     stackedImagesWidget->removeLayer();
 }
 
+void ImageDisplaySubWindow::showLayer(const QString &name) {
+    stackedImagesWidget->setTopLayer(name);
+}
+

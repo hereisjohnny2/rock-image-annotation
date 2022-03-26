@@ -22,6 +22,7 @@ public:
     bool loadImage(const QString &filePath);
     void scaleImage(double factor);
     void addNewLayer(const QString& label);
+    void showLayer(const QString &name);
     void removeCurrentLayer();
 };
 

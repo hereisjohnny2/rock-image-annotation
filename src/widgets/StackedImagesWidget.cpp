@@ -36,3 +36,8 @@ void StackedImagesWidget::removeLayer() {
         stackedLayout->setCurrentIndex(stackedLayout->count() - 1);
     }
 }
+
+void StackedImagesWidget::setTopLayer(const QString &name) {
+    auto image = getImageByName(name);
+    stackedLayout->setCurrentWidget(image);
+}

@@ -7,6 +7,7 @@
 
 #include <QMainWindow>
 #include <QListWidgetItem>
+#include <QTreeWidgetItem>
 #include "../../widgets/PixelDataTable.h"
 #include "../../widgets/ImageDisplaySubWindow.h"
 
@@ -50,6 +51,7 @@ namespace RockImageUI {
         void changeTargetLabel();
         void addLayer();
         void removeLayer();
+        void showLayer(QTreeWidgetItem *treeWidgetItem, int column);
 
     private:
         ImageDisplaySubWindow *getSubWidowByName(const QString& name);

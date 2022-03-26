@@ -18,6 +18,7 @@ public:
     void addLayer(ImageDisplayWidget *layer);
     void removeLayer();
     void scaleImage(double factor) const;
+    void setTopLayer(const QString &name);
 };
 
 

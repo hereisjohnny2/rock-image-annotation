@@ -31,6 +31,7 @@ namespace RockImageUI {
 
         // ImageTree Events
         ui->imageTree->installEventFilter(this);
+        ui->imageTree->installEventFilter(this);
         connect(ui->imageTree,
                 SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)),
                 this,
@@ -313,6 +314,8 @@ namespace RockImageUI {
         ui->zoomInAction->setIcon(QIcon("../src/assets/icons/zoom-in.svg"));
         ui->zoomOutAction->setIcon(QIcon("../src/assets/icons/zoom-out.svg"));
         ui->closeAllAction->setIcon(QIcon("../src/assets/icons/close-all.svg"));
+        ui->addLayerAction->setIcon(QIcon("../src/assets/icons/layer.svg"));
+        ui->removeLayerAction->setIcon(QIcon("../src/assets/icons/remove.svg"));
     }
 
     bool RockImageUI::eventFilter(QObject *obj, QEvent *event) {

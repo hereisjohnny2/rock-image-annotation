@@ -1,6 +1,8 @@
 #include "StackedImagesWidget.h"
 #include <algorithm>
 
+const QString StackedImagesWidget::BASE_IMAGE = "baseImage";
+
 StackedImagesWidget::StackedImagesWidget() {
     stackedLayout = new QStackedLayout;
     addLayout(stackedLayout);
@@ -25,7 +27,7 @@ void StackedImagesWidget::addLayer(ImageDisplayWidget *layer) {
 }
 
 void StackedImagesWidget::scaleImage(double factor) const {
-    auto image = getImageByName("baseImage");
+    auto image = getImageByName(StackedImagesWidget::BASE_IMAGE);
     image->resize(factor * image->pixmap(Qt::ReturnByValue).size());
 }
 

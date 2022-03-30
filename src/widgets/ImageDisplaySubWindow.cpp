@@ -40,7 +40,7 @@ bool ImageDisplaySubWindow::loadImage(const QString &filePath) {
 
     auto *layer = new ImageDisplayWidget();
     layer->setImage(newImage);
-    layer->setLabel("baseImage");
+    layer->setLabel(StackedImagesWidget::BASE_IMAGE);
 
     stackedImagesWidget->addLayer(layer);
 

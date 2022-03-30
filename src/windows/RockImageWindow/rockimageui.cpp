@@ -426,7 +426,7 @@ namespace RockImageUI {
 
         if (treeWidgetItem->parent() == nullptr) {
             subWindowName = treeWidgetItem->text(0);
-            name = "baseImage";
+            name = StackedImagesWidget::BASE_IMAGE;
         } else {
             subWindowName = treeWidgetItem->parent()->text(0);
             name = treeWidgetItem->text(column);

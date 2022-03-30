@@ -24,6 +24,7 @@ public:
     void addNewLayer(const QString& label);
     void showLayer(const QString &name);
     void removeCurrentLayer();
+    void removeLayerByName(const QString& name);
 };
 
 

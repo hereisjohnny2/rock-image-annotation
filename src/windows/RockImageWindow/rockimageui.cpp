@@ -20,7 +20,7 @@ namespace RockImageUI {
 
         // Images Menu Actions
         connect(ui->addLayerAction, SIGNAL(triggered()), this, SLOT(addLayer()));
-        connect(ui->removeLayerAction, SIGNAL(triggered()), this, SLOT(removeLayer()));
+        connect(ui->removeLayerAction, SIGNAL(triggered()), this, SLOT(removeCurrentLayerLayer()));
 
         // ImageList Events
         ui->imagesList->installEventFilter(this);
@@ -321,16 +321,32 @@ namespace RockImageUI {
     bool RockImageUI::eventFilter(QObject *obj, QEvent *event) {
         if (event->type() == QEvent::KeyPress) {
             auto *keyEvent = dynamic_cast<QKeyEvent *>(event);
+
             if(keyEvent->key() == ENTER_KEY_CODE) {
-                showImage(ui->imagesList->currentItem());
-                return true;
+                if (dynamic_cast<QListWidget*>(obj) != nullptr) {
+                    showImage(ui->imagesList->currentItem());
+                    return true;
+                }
+
+                if (dynamic_cast<QTreeWidget*>(obj) != nullptr) {
+                    showLayer(ui->imageTree->currentItem(), 0);
+                    return true;
+                }
             }
 
             if(keyEvent->key() == DELETE_KEY_CODE) {
-                deleteCurrentImage();
-                return true;
-            }
+                if (dynamic_cast<QListWidget*>(obj) != nullptr) {
+                    deleteCurrentImage();
+                    return true;
+                }
 
+                if (dynamic_cast<QTreeWidget*>(obj) != nullptr) {
+                    auto item = ui->imageTree->currentItem();
+                    if (item->parent() == nullptr) return false;
+
+                    return removeLayer(item);
+                }
+            }
             return false;
         } else {
             return QObject::eventFilter(obj, event);
@@ -393,7 +409,7 @@ namespace RockImageUI {
         node->addChild(layerTreeItem);
     }
 
-    void RockImageUI::removeLayer() {
+    void RockImageUI::removeCurrentLayerLayer() {
         auto window = getCurrentSubWindow();
         if (window == nullptr) return;
         window->removeCurrentLayer();
@@ -411,5 +427,21 @@ namespace RockImageUI {
 
         auto subWindow = getSubWidowByName(subWindowName);
         subWindow->showLayer(name);
+    }
+
+    bool RockImageUI::removeLayer(QTreeWidgetItem* item) {
+        bool  result = CustomMessageDialogs::Question(
+                this,
+                "Remover Camada",
+                "Tem certeza que deseja remover essa camada?");
+        if (!result) return false;
+
+        auto window = getCurrentSubWindow();
+        if (window == nullptr) return false;
+
+        auto parent = item->parent();
+        window->removeLayerByName(item->text(0));
+        parent->removeChild(item);
+        return true;
     }
 } // RockImageUI

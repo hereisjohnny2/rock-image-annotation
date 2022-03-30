@@ -41,3 +41,11 @@ void StackedImagesWidget::setTopLayer(const QString &name) {
     auto image = getImageByName(name);
     stackedLayout->setCurrentWidget(image);
 }
+
+void StackedImagesWidget::removeLayerByName(const QString &name) {
+    auto layer = getImageByName(name);
+    stackedLayout->removeWidget(layer);
+    layers.removeIf([=](ImageDisplayWidget* layer) {
+        return layer->getLabel() == name;
+    });
+}

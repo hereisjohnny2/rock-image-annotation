@@ -50,7 +50,7 @@ namespace RockImageUI {
         void zoomOut();
         void changeTargetLabel();
         void addLayer();
-        void removeLayer();
+        void removeCurrentLayerLayer();
         void showLayer(QTreeWidgetItem *treeWidgetItem, int column);
 
     private:
@@ -65,6 +65,7 @@ namespace RockImageUI {
         void loadImage(const QString& filePath);
         void createToolBar();
         void setActionsIcons();
+        bool removeLayer(QTreeWidgetItem* item);
         bool eventFilter(QObject *obj, QEvent *event) override;
     };
 

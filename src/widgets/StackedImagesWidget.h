@@ -19,6 +19,8 @@ public:
     void removeLayer();
     void scaleImage(double factor) const;
     void setTopLayer(const QString &name);
+
+    void removeLayerByName(const QString &name);
 };
 
 

@@ -146,6 +146,13 @@ namespace RockImageUI {
             listItem = foundItems[0];
         }
 
+        auto foundTreeItems = ui->imageTree->findItems(fileName, Qt::MatchExactly);
+        if (foundTreeItems.isEmpty()) {
+            auto treeItem = new QTreeWidgetItem();
+            treeItem->setText(0, fileName);
+            ui->imageTree->addTopLevelItem(treeItem);
+        }
+
         ui->imagesListDockWidget->setVisible(true);
         ui->tableTabDockWidget->setVisible(true);
 
@@ -155,10 +162,6 @@ namespace RockImageUI {
     void RockImageUI::showImage(QListWidgetItem *listWidgetItem) {
         QString filePath = listWidgetItem->toolTip();
         QString fileName = listWidgetItem->text();
-
-        auto treeItem = new QTreeWidgetItem();
-        treeItem->setText(0, fileName);
-        ui->imageTree->addTopLevelItem(treeItem);
 
         auto pixelDataTableIndex = getPixelDataIndexTableByName(fileName);
         if (pixelDataTableIndex == -1) {
@@ -380,8 +383,6 @@ namespace RockImageUI {
         deleteImage(name);
         ui->imagesList->takeItem(index);
 
-        auto node = ui->imageTree->findItems(name, Qt::MatchExactly)[0];
-        auto nodeIndex = ui->imageTree->indexOfTopLevelItem(node);
         ui->imageTree->takeTopLevelItem(index);
 
         if (ui->imagesList->currentRow() == -1) {
@@ -395,7 +396,7 @@ namespace RockImageUI {
         if (window == nullptr) return;
 
         bool isOk;
-        QString label = QInputDialog::getText(this, tr("Adicionar Camada"), tr("Label:"), QLineEdit::Normal, QDir::home().dirName(), &isOk);
+        QString label = QInputDialog::getText(this, tr("Adicionar Camada"), tr("Label:"), QLineEdit::Normal, "layer", &isOk);
         if (!isOk or label.isEmpty()) {
             QMessageBox::warning(this, tr("Adicionar Camada"), tr("Toda camada deve possuir uma label."));
             return;

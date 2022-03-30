@@ -422,8 +422,15 @@ namespace RockImageUI {
     }
 
     void RockImageUI::showLayer(QTreeWidgetItem *treeWidgetItem, int column) {
-        QString name = treeWidgetItem->text(column);
-        QString subWindowName = treeWidgetItem->parent()->text(0);
+        QString subWindowName, name;
+
+        if (treeWidgetItem->parent() == nullptr) {
+            subWindowName = treeWidgetItem->text(0);
+            name = "baseImage";
+        } else {
+            subWindowName = treeWidgetItem->parent()->text(0);
+            name = treeWidgetItem->text(column);
+        }
 
         auto subWindow = getSubWidowByName(subWindowName);
         subWindow->showLayer(name);

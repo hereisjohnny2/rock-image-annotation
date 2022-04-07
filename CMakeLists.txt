@@ -8,12 +8,16 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
+list(APPEND CMAKE_PREFIX_PATH "/usr/local/libtorch")
+find_package(Torch REQUIRED)
+
 
 find_package(Qt6 COMPONENTS
         Core
         Gui
         Widgets
-        REQUIRED)
+        REQUIRED
+)
 
 add_executable(
         rock_image_cpp
@@ -26,11 +30,18 @@ add_executable(
         src/widgets/ImageDisplaySubWindow.h
         src/widgets/ImageDisplayWidget.cpp
         src/widgets/ImageDisplayWidget.h
-        src/windows/Dialogs/CustomMessageDialogs.cpp src/windows/Dialogs/CustomMessageDialogs.h src/widgets/StackedImagesWidget.cpp src/widgets/StackedImagesWidget.h)
+        src/windows/Dialogs/CustomMessageDialogs.cpp
+        src/windows/Dialogs/CustomMessageDialogs.h
+        src/widgets/StackedImagesWidget.cpp
+        src/widgets/StackedImagesWidget.h
+        src/NeuralNetwork/models/RockImageModel.cpp
+        src/NeuralNetwork/models/RockImageModel.h
+        src/NeuralNetwork/datasets/RockImageDataset.cpp src/NeuralNetwork/datasets/RockImageDataset.h src/NeuralNetwork/entities/RockData.h src/NeuralNetwork/services/RockImageModelTrainService.cpp src/NeuralNetwork/services/RockImageModelTrainService.h src/NeuralNetwork/services/RockImageModelTestService.cpp src/NeuralNetwork/services/RockImageModelTestService.h)
 
 target_link_libraries(rock_image_cpp
+        "${TORCH_LIBRARIES}"
         Qt::Core
         Qt::Gui
         Qt::Widgets
-        )
+)
 

@@ -307,18 +307,18 @@ namespace RockImageUI {
     }
 
     void RockImageUI::setActionsIcons() {
-        ui->openImageAction->setIcon(QIcon("../src/assets/icons/add.svg"));
-        ui->saveDataAction->setIcon(QIcon("../src/assets/icons/save.svg"));
-        ui->cleanTableAction->setIcon(QIcon("../src/assets/icons/clean-table.svg"));
-        ui->exitAction->setIcon(QIcon("../src/assets/icons/exit.svg"));
-        ui->applyBinarizationAction->setIcon(QIcon("../src/assets/icons/binary.svg"));
-        ui->collectDataAction->setIcon(QIcon("../src/assets/icons/collect.svg"));
-        ui->changeLabelAction->setIcon(QIcon("../src/assets/icons/change.svg"));
-        ui->zoomInAction->setIcon(QIcon("../src/assets/icons/zoom-in.svg"));
-        ui->zoomOutAction->setIcon(QIcon("../src/assets/icons/zoom-out.svg"));
-        ui->closeAllAction->setIcon(QIcon("../src/assets/icons/close-all.svg"));
-        ui->addLayerAction->setIcon(QIcon("../src/assets/icons/layer.svg"));
-        ui->removeLayerAction->setIcon(QIcon("../src/assets/icons/remove.svg"));
+        ui->openImageAction->setIcon(QIcon("../assets/icons/add.svg"));
+        ui->saveDataAction->setIcon(QIcon("../assets/icons/save.svg"));
+        ui->cleanTableAction->setIcon(QIcon("../assets/icons/clean-table.svg"));
+        ui->exitAction->setIcon(QIcon("../assets/icons/exit.svg"));
+        ui->applyBinarizationAction->setIcon(QIcon("../assets/icons/binary.svg"));
+        ui->collectDataAction->setIcon(QIcon("../assets/icons/collect.svg"));
+        ui->changeLabelAction->setIcon(QIcon("../assets/icons/change.svg"));
+        ui->zoomInAction->setIcon(QIcon("../assets/icons/zoom-in.svg"));
+        ui->zoomOutAction->setIcon(QIcon("../assets/icons/zoom-out.svg"));
+        ui->closeAllAction->setIcon(QIcon("../assets/icons/close-all.svg"));
+        ui->addLayerAction->setIcon(QIcon("../assets/icons/layer.svg"));
+        ui->removeLayerAction->setIcon(QIcon("../assets/icons/remove.svg"));
     }
 
     bool RockImageUI::eventFilter(QObject *obj, QEvent *event) {

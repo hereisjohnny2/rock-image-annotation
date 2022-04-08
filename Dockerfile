@@ -27,9 +27,9 @@ RUN unzip libtorch.zip
 
 RUN mv libtorch /usr/local
 
-COPY . /usr/src/dockertest
+COPY . /usr/src/rockimage
 
-WORKDIR /usr/src/dockertest
+WORKDIR /usr/src/rockimage
 
 RUN mkdir build
 

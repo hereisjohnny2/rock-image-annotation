@@ -1,8 +1,8 @@
-#1/bin/bash
+#!/bin/bash
 
 echo 'Converting Images'
 
-for f in $1/**/*.tif ; do
+for f in $1/**/*.$2 ; do
   echo "Converting $f"
   convert "$f" "${f%.tif}-converted.png" ;
 done

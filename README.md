@@ -17,6 +17,7 @@ Rock Image C++ is simple GUI application build in C++ and Qt to label layers fro
 - [ ] Add AI services to provide image segmentation. </br>
   - [x] Provide classes and functions to create and run AI models.
   - [x] Provide classes and functions to create a dataset.
+- [x] Create Docker image
 
 ## Technologies and Dependencies 💻
 
@@ -50,12 +51,46 @@ After the compilation is completed run the executable.
 $ ./rock_image_cpp
 ```
 
-### Running with docker
+### Converting Images
+
+So far this project only support few image formats, such as JPG, BMP and PNG. Use the `convimg` script to convert the images from other formats to PNG and use with the project.
 
 ```shell
+# tools/convimg <director-with-images> <original-format>
+$ tools/convimg ~/Images tif
+```
+
+### Running with docker
+
+It's possible to run this project on a docker container. First make sure that docker and docker compose are installed locally. If not follow the [instructions] in the official page.
+
+```shell
+$ docker -v
+$ docker-compose -v
+```
+ 
+Then grant access to everyone with `xhost`. It's going to be necessary to run the GUI.
+```shell
 $ xhost +
+```
+
+Finally, build the image and run the container with `docker-compose`.
+
+```shell
 $ docker-compose build
 $ docker-compose up
+```
+
+It's also possible to build and run the container without `docker-compose`.
+
+```shell
+$ docker build -t rockimage . 
+$ docker run \
+  -e "DISPLAY=$DISPLAY" \
+  -v "$HOME/.Xauthority:/root/.Xauthority:ro" \
+  --network host \
+   rockimage
+
 ```
 
 ## Testing 🧪

@@ -50,6 +50,13 @@ After the compilation is completed run the executable.
 $ ./rock_image_cpp
 ```
 
+### Running with docker
+
+```shell
+$ xhost +
+$ docker-compose build
+$ docker-compose up
+```
 
 ## Testing 🧪
 

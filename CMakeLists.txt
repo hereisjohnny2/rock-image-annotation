@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.21)
+cmake_minimum_required(VERSION 3.16)
 project(rock_image_cpp)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -10,7 +10,6 @@ set(CMAKE_AUTOUIC ON)
 
 list(APPEND CMAKE_PREFIX_PATH "/usr/local/libtorch")
 find_package(Torch REQUIRED)
-
 
 find_package(Qt6 COMPONENTS
         Core

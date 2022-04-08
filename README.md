@@ -24,6 +24,8 @@ Rock Image C++ is simple GUI application build in C++ and Qt to label layers fro
 - [C++ 17](https://en.cppreference.com/w/cpp/17)
 - [QT 6](https://www.qt.io/product/qt6)
 - [LibTorch](https://pytorch.org/)
+- [Docker](https://docs.docker.com)
+- [Docker Compose](https://docs.docker.com/compose/gettingstarted/)
 
 ## Getting Started 🚀
 
@@ -60,9 +62,9 @@ So far this project only support few image formats, such as JPG, BMP and PNG. Us
 $ tools/convimg ~/Images tif
 ```
 
-### Running with docker
+### Running with docker 
 
-It's possible to run this project on a docker container. First make sure that docker and docker compose are installed locally. If not follow the [instructions] in the official page.
+It's possible to run this project on a docker container. First make sure that docker and docker compose are installed locally. If not follow the [instructions](https://docs.docker.com/engine/install/) in the official page.
 
 ```shell
 $ docker -v

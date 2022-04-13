@@ -18,8 +18,7 @@ find_package(Qt6 COMPONENTS
         REQUIRED
 )
 
-add_executable(
-        rock_image_cpp
+add_executable(rock_image_cpp
         src/main.cpp
         src/windows/RockImageWindow/rockimageui.cpp
         src/windows/RockImageWindow/rockimageui.h
@@ -35,7 +34,14 @@ add_executable(
         src/widgets/StackedImagesWidget.h
         src/NeuralNetwork/models/RockImageModel.cpp
         src/NeuralNetwork/models/RockImageModel.h
-        src/NeuralNetwork/datasets/RockImageDataset.cpp src/NeuralNetwork/datasets/RockImageDataset.h src/NeuralNetwork/entities/RockData.h src/NeuralNetwork/services/RockImageModelTrainService.cpp src/NeuralNetwork/services/RockImageModelTrainService.h src/NeuralNetwork/services/RockImageModelTestService.cpp src/NeuralNetwork/services/RockImageModelTestService.h)
+        src/NeuralNetwork/datasets/RockImageDataset.cpp 
+        src/NeuralNetwork/datasets/RockImageDataset.h 
+        src/NeuralNetwork/entities/RockData.h 
+        src/NeuralNetwork/services/RockImageModelTrainService.cpp 
+        src/NeuralNetwork/services/RockImageModelTrainService.h 
+        src/NeuralNetwork/services/RockImageModelTestService.cpp
+        src/NeuralNetwork/services/RockImageModelTestService.h
+)
 
 target_link_libraries(rock_image_cpp
         "${TORCH_LIBRARIES}"

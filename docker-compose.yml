@@ -8,4 +8,5 @@ services:
       - DISPLAY=${DISPLAY}
     volumes:
       - $HOME/.Xauthority:/root/.Xauthority:ro
+      - .:/usr/src/rockimage
     network_mode: host

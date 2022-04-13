@@ -35,6 +35,4 @@ RUN mkdir build
 
 RUN cmake -B build -S . -DCMAKE_PREFIX_PATH=/6.2.0/gcc_64
 
-RUN cd build && make
-
-CMD ["./build/rock_image_cpp"]
+CMD ["./tools/buildrun"]

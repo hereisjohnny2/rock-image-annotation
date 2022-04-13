@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+cd build && make
+./rock_image_cpp

@@ -85,8 +85,9 @@ namespace RockImageUI {
             return;
         }
 
+        QString filter("Text files (*.txt, *.dat)");
         QString fileName = QFileDialog::getSaveFileName(
-                this, tr("Salvar Dados"), QDir::homePath());
+                this, tr("Salvar Dados"), QDir::homePath(), filter, &filter);
         QFile file(fileName);
 
         if (!file.open(QIODevice::WriteOnly | QFile::Text)) {

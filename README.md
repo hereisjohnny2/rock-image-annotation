@@ -92,7 +92,7 @@ $ docker run --name rockimagecpp --rm \
   -v "$HOME/.Xauthority:/root/.Xauthority:ro" \
   -v "$pwd:/usr/src/rockimage" \
   --network host \
-   rockimage
+   rockimage\
 
 ```
 

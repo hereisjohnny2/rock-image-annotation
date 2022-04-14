@@ -87,9 +87,10 @@ It's also possible to build and run the container without `docker-compose`.
 
 ```shell
 $ docker build -t rockimage . 
-$ docker run \
+$ docker run --name rockimagecpp --rm \
   -e "DISPLAY=$DISPLAY" \
   -v "$HOME/.Xauthority:/root/.Xauthority:ro" \
+  -v "$pwd:/usr/src/rockimage" \
   --network host \
    rockimage
 

@@ -31,6 +31,8 @@ COPY . /usr/src/rockimage
 
 WORKDIR /usr/src/rockimage
 
+RUN chmod +x tools/buildrun
+
 RUN mkdir build
 
 RUN cmake -B build -S . -DCMAKE_PREFIX_PATH=/6.2.0/gcc_64

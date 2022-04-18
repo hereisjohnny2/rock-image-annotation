@@ -6,6 +6,7 @@
 #include <QMouseEvent>
 #include <QScrollBar>
 #include <QPainter>
+#include <random>
 
 #include "ImageDisplaySubWindow.h"
 #include "ImageDisplayWidget.h"
@@ -71,8 +72,12 @@ void ImageDisplaySubWindow::adjustScrollBar(QScrollBar *bar, double factor) {
 void ImageDisplaySubWindow::addNewLayer(const QString& label) {
     auto layer = new ImageDisplayWidget();
     auto baseImage = stackedImagesWidget->getImages().top()->getImage();
+
+    QBrush brush(generateRandomColor());
+
     layer->setLabel(label);
     layer->setImage(baseImage);
+    layer->setPenBrush(brush);
     stackedImagesWidget->addLayer(layer);
 }
 
@@ -86,5 +91,13 @@ void ImageDisplaySubWindow::showLayer(const QString &name) {
 
 void ImageDisplaySubWindow::removeLayerByName(const QString& name) {
     stackedImagesWidget->removeLayerByName(name);
+}
+
+QColor ImageDisplaySubWindow::generateRandomColor() {
+    std::random_device dev;
+    std::mt19937 rng(dev());
+    std::uniform_int_distribution<std::mt19937::result_type> randomInt(0,255);
+
+    return QColor(randomInt(rng), randomInt(rng), randomInt(rng));
 }
 

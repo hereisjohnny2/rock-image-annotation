@@ -15,6 +15,7 @@ private:
     QScrollArea *scrollArea;
     double scaleFactor = 1;
     static void adjustScrollBar(QScrollBar *bar, double factor);
+    static QColor generateRandomColor();
 
 public:
     ImageDisplaySubWindow(const QString& filePath, const QString& fileName);

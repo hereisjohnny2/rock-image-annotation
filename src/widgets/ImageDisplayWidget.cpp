@@ -50,7 +50,7 @@ void ImageDisplayWidget::clearPixelDataMap() {
 
 void ImageDisplayWidget::drawLineTo(const QPoint &endPoint) {
     QPainter painter(&compositeImage);
-    painter.setPen(QPen(Qt::blue, 10, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+    painter.setPen(QPen(penBrush, penWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
     painter.drawLine(lastPoint, endPoint);
     int rad = (10 / 2) + 2;
     update(QRect(lastPoint, endPoint).normalized()
@@ -88,6 +88,22 @@ QImage ImageDisplayWidget::createImageWithOverlay() {
     painter.end();
 
     return imageWithOverlay;
+}
+
+int ImageDisplayWidget::getPenWidth() const {
+    return penWidth;
+}
+
+void ImageDisplayWidget::setPenWidth(int penWidth) {
+    ImageDisplayWidget::penWidth = penWidth;
+}
+
+const QBrush &ImageDisplayWidget::getPenBrush() const {
+    return penBrush;
+}
+
+void ImageDisplayWidget::setPenBrush(const QBrush &penBrush) {
+    ImageDisplayWidget::penBrush = penBrush;
 }
 
 

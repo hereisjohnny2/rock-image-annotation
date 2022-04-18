@@ -151,6 +151,7 @@ namespace RockImageUI {
         if (foundTreeItems.isEmpty()) {
             auto treeItem = new QTreeWidgetItem();
             treeItem->setText(0, fileName);
+            treeItem->setBackground(1, Qt::blue);
             ui->imageTree->addTopLevelItem(treeItem);
         }
 
@@ -407,6 +408,7 @@ namespace RockImageUI {
 
         auto layerTreeItem = new QTreeWidgetItem();
         layerTreeItem->setText(0, label);
+        layerTreeItem->setBackground(1, window->getTopLayerImage()->getPenBrush());
         auto node = ui->imageTree->findItems(window->windowTitle(), Qt::MatchExactly)[0];
         node->addChild(layerTreeItem);
     }

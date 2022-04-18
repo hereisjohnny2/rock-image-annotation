@@ -102,7 +102,7 @@ void ImageDisplayWidget::setPenWidth(int penWidth) {
     ImageDisplayWidget::penWidth = penWidth;
 }
 
-const QBrush &ImageDisplayWidget::getPenBrush() const {
+QBrush ImageDisplayWidget::getPenBrush() const {
     return penBrush;
 }
 

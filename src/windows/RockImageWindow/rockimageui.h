@@ -52,6 +52,9 @@ namespace RockImageUI {
         void addLayer();
         void removeCurrentLayerLayer();
         void showLayer(QTreeWidgetItem *treeWidgetItem, int column);
+        void increaseWidth();
+        void decreaseWidth();
+        void chooseColor();
 
     private:
         ImageDisplaySubWindow *getSubWidowByName(const QString& name);

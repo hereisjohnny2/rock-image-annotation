@@ -21,6 +21,9 @@ namespace RockImageUI {
         // Images Menu Actions
         connect(ui->addLayerAction, SIGNAL(triggered()), this, SLOT(addLayer()));
         connect(ui->removeLayerAction, SIGNAL(triggered()), this, SLOT(removeCurrentLayerLayer()));
+        connect(ui->increaseWidthAction, SIGNAL(triggered()), this, SLOT(increaseWidth()));
+        connect(ui->decreaseWidthAction, SIGNAL(triggered()), this, SLOT(decreaseWidth()));
+        connect(ui->chooseColorAction, SIGNAL(triggered()), this, SLOT(chooseColor()));
 
         // ImageList Events
         ui->imagesList->installEventFilter(this);
@@ -397,7 +400,9 @@ namespace RockImageUI {
         if (window == nullptr) return;
 
         bool isOk;
-        QString label = QInputDialog::getText(this, tr("Adicionar Camada"), tr("Label:"), QLineEdit::Normal, "layer", &isOk);
+        QString label = QInputDialog::getText(this,
+                                              tr("Adicionar Camada"),
+                                              tr("Label:"), QLineEdit::Normal, "layer", &isOk);
         if (!isOk or label.isEmpty()) {
             QMessageBox::warning(this, tr("Adicionar Camada"), tr("Toda camada deve possuir uma label."));
             return;
@@ -453,5 +458,24 @@ namespace RockImageUI {
         window->removeLayerByName(item->text(0));
         parent->removeChild(item);
         return true;
+    }
+
+    void RockImageUI::increaseWidth() {
+        auto window = getCurrentSubWindow();
+        if (window == nullptr) return;
+
+        window->updatePenBrush(1);
+    }
+
+    void RockImageUI::decreaseWidth() {
+        auto window = getCurrentSubWindow();
+        if (window == nullptr) return;
+
+        window->updatePenBrush(-1);
+    }
+
+    void RockImageUI::chooseColor() {
+        auto window = getCurrentSubWindow();
+        if (window == nullptr) return;
     }
 } // RockImageUI

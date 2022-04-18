@@ -26,6 +26,7 @@ public:
     void showLayer(const QString &name);
     void removeCurrentLayer();
     void removeLayerByName(const QString& name);
+    void updatePenBrush(const int& value);
 };
 
 

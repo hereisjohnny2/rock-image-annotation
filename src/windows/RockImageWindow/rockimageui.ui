@@ -55,9 +55,18 @@
     <property name="title">
      <string>Imagem</string>
     </property>
+    <widget class="QMenu" name="menuPincel">
+     <property name="title">
+      <string>Pincel</string>
+     </property>
+     <addaction name="increaseWidthAction"/>
+     <addaction name="decreaseWidthAction"/>
+     <addaction name="chooseColorAction"/>
+    </widget>
     <addaction name="applyBinarizationAction"/>
     <addaction name="addLayerAction"/>
     <addaction name="removeLayerAction"/>
+    <addaction name="menuPincel"/>
    </widget>
    <widget class="QMenu" name="showDockMenu">
     <property name="title">
@@ -278,6 +287,27 @@
   <action name="removeLayerAction">
    <property name="text">
     <string>Remover Camanda</string>
+   </property>
+  </action>
+  <action name="increaseWidthAction">
+   <property name="text">
+    <string>Aumentar Largura</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+[</string>
+   </property>
+  </action>
+  <action name="decreaseWidthAction">
+   <property name="text">
+    <string>Diminuir Largura</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+]</string>
+   </property>
+  </action>
+  <action name="chooseColorAction">
+   <property name="text">
+    <string>Escolher Color</string>
    </property>
   </action>
   <zorder>tableTabDockWidget</zorder>

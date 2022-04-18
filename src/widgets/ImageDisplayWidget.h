@@ -31,7 +31,7 @@ public:
     [[nodiscard]] const QString &getLabel() const;
     [[nodiscard]] int getPenWidth() const;
     void setPenWidth(int penWidth);
-    [[nodiscard]] const QBrush &getPenBrush() const;
+    [[nodiscard]] QBrush getPenBrush() const;
     void setPenBrush(const QBrush &penBrush);
     void setLabel(const QString &name);
     void clearPixelDataMap();

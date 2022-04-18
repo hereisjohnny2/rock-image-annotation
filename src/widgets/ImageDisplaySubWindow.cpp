@@ -101,3 +101,9 @@ QColor ImageDisplaySubWindow::generateRandomColor() {
     return QColor(randomInt(rng), randomInt(rng), randomInt(rng));
 }
 
+void ImageDisplaySubWindow::updatePenBrush(const int &value) {
+    auto image = getTopLayerImage();
+    int currentWidth = image->getPenWidth();
+    image->setPenWidth(currentWidth + value);
+}
+

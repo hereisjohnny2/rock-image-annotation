@@ -15,6 +15,10 @@ void ImageDisplayWidget::mousePressEvent(QMouseEvent *event) {
 }
 
 void ImageDisplayWidget::mouseMoveEvent(QMouseEvent *event) {
+    if (label == "baseImage") {
+        return;
+    }
+
     QPoint currentPoint = event->pos();
     QRgb rgb = QColor(image.pixel(currentPoint)).rgb();
     pixelDataMap.insert(currentPoint, rgb);
@@ -23,7 +27,7 @@ void ImageDisplayWidget::mouseMoveEvent(QMouseEvent *event) {
 
 
 void ImageDisplayWidget::mouseReleaseEvent(QMouseEvent *event) {
-    if (event->button() == Qt::LeftButton) {
+    if (event->button() == Qt::LeftButton and label != "baseImage") {
         drawLineTo(event->pos());
     }
 }

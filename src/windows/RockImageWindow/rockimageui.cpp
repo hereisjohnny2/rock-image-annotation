@@ -4,6 +4,7 @@
 #include <map>
 #include <QDialog>
 #include "../Dialogs/CustomMessageDialogs.h"
+#include "../Dialogs/ColorDialog.h"
 
 namespace RockImageUI {
     RockImageUI::RockImageUI(QWidget *parent) :
@@ -415,6 +416,8 @@ namespace RockImageUI {
         layerTreeItem->setBackground(1, window->getTopLayerImage()->getPenBrush());
         auto node = ui->imageTree->findItems(window->windowTitle(), Qt::MatchExactly)[0];
         node->addChild(layerTreeItem);
+
+        ui->imageTree->setCurrentItem(layerTreeItem);
     }
 
     void RockImageUI::removeCurrentLayerLayer() {
@@ -464,18 +467,33 @@ namespace RockImageUI {
         auto window = getCurrentSubWindow();
         if (window == nullptr) return;
 
-        window->updatePenBrush(1);
+        window->updatePenWidth(1);
     }
 
     void RockImageUI::decreaseWidth() {
         auto window = getCurrentSubWindow();
         if (window == nullptr) return;
 
-        window->updatePenBrush(-1);
+        window->updatePenWidth(-1);
     }
 
     void RockImageUI::chooseColor() {
         auto window = getCurrentSubWindow();
         if (window == nullptr) return;
+
+        bool isOk;
+        QList<int> colors = ColorDialog::getStrings(this, &isOk);
+        if (!isOk or colors.isEmpty()) {
+            QMessageBox::warning(this, tr("Mudar Color"), tr("Selecionar ao menos um valor"));
+            return;
+        }
+
+        QColor color(colors[0], colors[1], colors[2]);
+
+        auto node = ui->imageTree->currentItem();
+        if (node == nullptr) return;
+        node->setBackground(1, color);
+
+        window->updatePenBrush(color);
     }
 } // RockImageUI

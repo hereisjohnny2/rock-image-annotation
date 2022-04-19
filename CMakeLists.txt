@@ -41,7 +41,7 @@ add_executable(rock_image_cpp
         src/NeuralNetwork/services/RockImageModelTrainService.h 
         src/NeuralNetwork/services/RockImageModelTestService.cpp
         src/NeuralNetwork/services/RockImageModelTestService.h
-)
+        src/windows/Dialogs/ColorDialog.cpp src/windows/Dialogs/ColorDialog.h)
 
 target_link_libraries(rock_image_cpp
         "${TORCH_LIBRARIES}"

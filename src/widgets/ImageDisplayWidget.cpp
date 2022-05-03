@@ -20,7 +20,10 @@ void ImageDisplayWidget::mouseMoveEvent(QMouseEvent *event) {
     }
 
     QPoint currentPoint = event->pos();
+    if (pixelDataMap.contains(currentPoint)) return;
+
     QRgb rgb = QColor(image.pixel(currentPoint)).rgb();
+
     pixelDataMap.insert(currentPoint, rgb);
     drawLineTo(event->pos());
 }
@@ -56,7 +59,7 @@ void ImageDisplayWidget::drawLineTo(const QPoint &endPoint) {
     QPainter painter(&compositeImage);
     painter.setPen(QPen(penBrush, penWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
     painter.drawLine(lastPoint, endPoint);
-    int rad = (10 / 2) + 2;
+    int rad = (penWidth / 2) + 2;
     update(QRect(lastPoint, endPoint).normalized()
                    .adjusted(-rad, -rad, +rad, +rad));
     lastPoint = endPoint;
@@ -66,6 +69,7 @@ void ImageDisplayWidget::paintEvent(QPaintEvent *event) {
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing, false);
     painter.drawImage(QPoint(0,0), compositeImage);
+    update();
 }
 
 const QString &ImageDisplayWidget::getLabel() const {
@@ -77,7 +81,7 @@ void ImageDisplayWidget::setLabel(const QString &name) {
 }
 
 QImage ImageDisplayWidget::createImageWithOverlay() {
-    QImage imageWithOverlay = QImage(image.size(), QImage::Format_RGB16);
+    QImage imageWithOverlay = QImage(image.size(), image.format());
     QPainter painter(&imageWithOverlay);
 
     painter.setCompositionMode(QPainter::CompositionMode_Source);
@@ -108,6 +112,16 @@ QBrush ImageDisplayWidget::getPenBrush() const {
 
 void ImageDisplayWidget::setPenBrush(const QBrush &penBrush) {
     ImageDisplayWidget::penBrush = penBrush;
+}
+
+void ImageDisplayWidget::resizeEvent(QResizeEvent *event) {
+    QWidget::resizeEvent(event);
+    resizeImage();
+}
+
+void ImageDisplayWidget::resizeImage() {
+    image = image.scaled(this->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    compositeImage = compositeImage.scaled(this->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
 }
 
 

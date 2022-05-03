@@ -13,7 +13,9 @@ private:
     QHash<QPoint, QRgb> pixelDataMap{};
     QPoint lastPoint;
     QString label = "layer";
+    double scaleFactor{1.0};
     int penWidth {10};
+
 public:
 
 private:
@@ -41,6 +43,9 @@ protected:
     void mouseMoveEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;
     void paintEvent(QPaintEvent *event) override;
+    void resizeEvent(QResizeEvent *event) override;
+
+    void resizeImage();
 };
 
 

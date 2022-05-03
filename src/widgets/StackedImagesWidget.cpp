@@ -27,8 +27,9 @@ void StackedImagesWidget::addLayer(ImageDisplayWidget *layer) {
 }
 
 void StackedImagesWidget::scaleImage(double factor) const {
-    auto image = getImageByName(StackedImagesWidget::BASE_IMAGE);
-    image->resize(factor * image->pixmap(Qt::ReturnByValue).size());
+    std::for_each(layers.begin(), layers.end(), [=](auto *image) {
+        image->resize(factor * image->pixmap(Qt::ReturnByValue).size());
+    });
 }
 
 void StackedImagesWidget::removeLayer() {

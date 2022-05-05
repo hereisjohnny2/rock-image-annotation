@@ -12,14 +12,12 @@
 #include "ImageDisplayWidget.h"
 
 ImageDisplaySubWindow::ImageDisplaySubWindow(const QString& filePath, const QString& fileName)
-    : stackedImagesWidget(new StackedImagesWidget()), scrollArea(new QScrollArea())
+    : scrollArea(new QScrollArea())
 {
     this->setWindowTitle(fileName);
 
     scrollArea->setBackgroundRole(QPalette::Dark);
-    scrollArea->setLayout(stackedImagesWidget);
     scrollArea->setVisible(false);
-
     this->setWidget(scrollArea);
 
     resize(QGuiApplication::primaryScreen()->availableSize() * 2 / 5);
@@ -39,25 +37,23 @@ bool ImageDisplaySubWindow::loadImage(const QString &filePath) {
         return false;
     }
 
-    auto *layer = new ImageDisplayWidget();
-    layer->setImage(newImage);
-    layer->setLabel(StackedImagesWidget::BASE_IMAGE);
+    imageDisplayWidget = new ImageDisplayWidget::ImageDisplayWidget();
+    imageDisplayWidget->setImage(newImage);
+    imageDisplayWidget->setCurrentLayer("baseImage");
 
-    stackedImagesWidget->addLayer(layer);
-
-    scaleFactor = 1.0;
+    scrollArea->setWidget(imageDisplayWidget);
     scrollArea->setVisible(true);
 
+    scaleFactor = 1.0;
     return true;
 }
 
-ImageDisplayWidget *ImageDisplaySubWindow::getTopLayerImage() const {
-    return stackedImagesWidget->getImages().top();
-}
-
 void ImageDisplaySubWindow::scaleImage(double factor) {
+    if (imageDisplayWidget == nullptr) return;
+
     scaleFactor *= factor;
-    stackedImagesWidget->scaleImage(scaleFactor);
+
+    imageDisplayWidget->resize(scaleFactor * imageDisplayWidget->pixmap(Qt::ReturnByValue).size());
 
     adjustScrollBar(scrollArea->horizontalScrollBar(), factor);
     adjustScrollBar(scrollArea->verticalScrollBar(), factor);
@@ -69,28 +65,35 @@ void ImageDisplaySubWindow::adjustScrollBar(QScrollBar *bar, double factor) {
 
 }
 
-void ImageDisplaySubWindow::addNewLayer(const QString& label) {
-    auto layer = new ImageDisplayWidget();
-    auto baseImage = stackedImagesWidget->getImages().top()->getImage();
+bool ImageDisplaySubWindow::addNewLayer(const QString& label) {
+    if (imageDisplayWidget == nullptr) return false;
+
+    if (layersColors.contains(label)) {
+        QMessageBox::warning(
+                this,
+                QGuiApplication::applicationDisplayName(),
+                tr("Layer with name %1 already exists!").arg(label));
+        return false;
+    }
 
     QBrush brush(generateRandomColor());
+    layersColors.emplace(label, brush);
 
-    layer->setLabel(label);
-    layer->setImage(baseImage);
-    layer->setPenBrush(brush);
-    stackedImagesWidget->addLayer(layer);
+    imageDisplayWidget->setCurrentLayer(label);
+    imageDisplayWidget->setPenBrush(brush);
+
+    return true;
 }
 
-void ImageDisplaySubWindow::removeCurrentLayer() {
-    stackedImagesWidget->removeLayer();
+void ImageDisplaySubWindow::setCurrentLayer(const QString &layerName) {
+    if (imageDisplayWidget == nullptr) return;
+
+    imageDisplayWidget->setCurrentLayer(layerName);
+    imageDisplayWidget->setPenBrush(layersColors.value(layerName));
 }
 
-void ImageDisplaySubWindow::showLayer(const QString &name) {
-    stackedImagesWidget->setTopLayer(name);
-}
-
-void ImageDisplaySubWindow::removeLayerByName(const QString& name) {
-    stackedImagesWidget->removeLayerByName(name);
+void ImageDisplaySubWindow::removeLayerByName(const QString& layerName) {
+    layersColors.remove(layerName);
 }
 
 QColor ImageDisplaySubWindow::generateRandomColor() {
@@ -98,17 +101,33 @@ QColor ImageDisplaySubWindow::generateRandomColor() {
     std::mt19937 rng(dev());
     std::uniform_int_distribution<std::mt19937::result_type> randomInt(0,255);
 
-    return QColor(randomInt(rng), randomInt(rng), randomInt(rng));
+    return {
+        static_cast<int>(randomInt(rng)),
+        static_cast<int>(randomInt(rng)),
+        static_cast<int>(randomInt(rng))
+    };
 }
 
 void ImageDisplaySubWindow::updatePenWidth(const int &value) {
-    auto image = getTopLayerImage();
-    int currentWidth = image->getPenWidth();
-    image->setPenWidth(currentWidth + value);
+    if (imageDisplayWidget == nullptr) return;
+
+    int currentWidth = imageDisplayWidget->getPenWidth();
+    imageDisplayWidget->setPenWidth(currentWidth + value);
 }
 
 void ImageDisplaySubWindow::updatePenBrush(const QColor &value) {
-    auto image = getTopLayerImage();
-    image->setPenBrush(value);
+    if (imageDisplayWidget == nullptr) return;
+
+    imageDisplayWidget->setPenBrush(value);
 }
 
+ImageDisplayWidget::ImageDisplayWidget *ImageDisplaySubWindow::getImageDisplayWidget() const {
+    return imageDisplayWidget;
+}
+
+void ImageDisplaySubWindow::removeCurrentLayer() {
+    if (imageDisplayWidget == nullptr) return;
+
+    layersColors.remove(imageDisplayWidget->getCurrentLayer());
+    setCurrentLayer("baseImage");
+}

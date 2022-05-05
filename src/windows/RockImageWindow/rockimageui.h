@@ -1,7 +1,3 @@
-//
-// Created by joao on 19/03/2022.
-//
-
 #ifndef ROCK_IMAGE_CPP_ROCKIMAGEUI_H
 #define ROCK_IMAGE_CPP_ROCKIMAGEUI_H
 
@@ -42,7 +38,8 @@ namespace RockImageUI {
         void openImage();
         void saveTableData();
         void cleanTable();
-        void applyBinarization();
+
+        [[maybe_unused]] static void applyBinarization();
         void collectDataFromImage();
         void showImage(QListWidgetItem *listWidgetItem);
         void closeAllWindows();
@@ -62,7 +59,6 @@ namespace RockImageUI {
         PixelDataTable* getCurrentDataTable();
         PixelDataTable*  getPixelDataTableByName(const QString& name);
         int  getPixelDataIndexTableByName(const QString& name);
-        ImageDisplayWidget *getCurrentSubWindowTopLayerImage();
         void deleteCurrentImage();
         void deleteImage(const QString& name);
         void loadImage(const QString& filePath);

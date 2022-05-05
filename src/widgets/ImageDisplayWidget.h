@@ -6,47 +6,60 @@
 #include <map>
 #include "PixelDataTable.h"
 
-class ImageDisplayWidget : public QLabel {
-private:
-    QImage image;
-    QImage compositeImage;
-    QHash<QPoint, QRgb> pixelDataMap{};
-    QPoint lastPoint;
-    QString label = "layer";
-    double scaleFactor{1.0};
-    int penWidth {10};
+namespace ImageDisplayWidget {
+    class ImageDisplayWidget : public QLabel {
+    public:
 
-public:
+    private:
+        QImage image{};
+        QImage compositeImage{};
 
-private:
-    QBrush penBrush {Qt::blue};
+        QHash<QPoint, QRgb> pixelDataMap{};
+        QPoint lastPoint{};
+        QString currentLayer{""};
 
-private:
-    void drawLineTo(const QPoint &endPoint);
-    QImage createImageWithOverlay();
+        QBrush penBrush{Qt::blue};
+        int penWidth{10};
 
-public:
-    ImageDisplayWidget();
-    void setImage(const QImage &newImage);
-    [[nodiscard]] const QImage &getImage() const;
-    [[nodiscard]] const QHash<QPoint, QRgb> &getPixelDataMap() const;
-    [[nodiscard]] const QString &getLabel() const;
-    [[nodiscard]] int getPenWidth() const;
-    void setPenWidth(int penWidth);
-    [[nodiscard]] QBrush getPenBrush() const;
-    void setPenBrush(const QBrush &penBrush);
-    void setLabel(const QString &name);
-    void clearPixelDataMap();
+    private:
+        void drawLineTo(const QPoint &endPoint);
 
-protected:
-    void mousePressEvent(QMouseEvent *event) override;
-    void mouseMoveEvent(QMouseEvent *event) override;
-    void mouseReleaseEvent(QMouseEvent *event) override;
-    void paintEvent(QPaintEvent *event) override;
-    void resizeEvent(QResizeEvent *event) override;
+        QImage createImageWithOverlay();
 
-    void resizeImage();
-};
+    public:
+        ImageDisplayWidget();
 
+        [[nodiscard]] const QHash<QPoint, QRgb> &getPixelDataMap() const;
+
+        [[nodiscard]] const QString &getCurrentLayer() const;
+
+        [[nodiscard]] int getPenWidth() const;
+
+        [[nodiscard]] const QBrush &getPenBrush() const;
+
+        void setImage(const QImage &newImage);
+
+        void setPenWidth(int newPenWidth);
+
+        void setPenBrush(const QBrush &newPenBrush);
+
+        void setCurrentLayer(const QString &layerName);
+
+        void clearPixelDataMap();
+
+        void resizeImage();
+
+    protected:
+        void mousePressEvent(QMouseEvent *event) override;
+
+        void mouseMoveEvent(QMouseEvent *event) override;
+
+        void mouseReleaseEvent(QMouseEvent *event) override;
+
+        void paintEvent(QPaintEvent *event) override;
+
+        void resizeEvent(QResizeEvent *event) override;
+    };
+}
 
 #endif //ROCK_IMAGE_CPP_IMAGEDISPLAYWIDGET_H

@@ -2,126 +2,122 @@
 #include <QPainter>
 #include "ImageDisplayWidget.h"
 
-ImageDisplayWidget::ImageDisplayWidget() {
-    setBackgroundRole(QPalette::Base);
-    setSizePolicy(QSizePolicy::Policy::Ignored, QSizePolicy::Policy::Ignored);
-    setScaledContents(true);
-}
-
-void ImageDisplayWidget::mousePressEvent(QMouseEvent *event) {
-    if (event->button() == Qt::LeftButton) {
-        lastPoint = event->pos();
-    }
-}
-
-void ImageDisplayWidget::mouseMoveEvent(QMouseEvent *event) {
-    if (label == "baseImage") {
-        return;
+namespace ImageDisplayWidget {
+    ImageDisplayWidget::ImageDisplayWidget() {
+        setBackgroundRole(QPalette::Dark);
+        setSizePolicy(QSizePolicy::Policy::Ignored, QSizePolicy::Policy::Ignored);
+        setScaledContents(true);
     }
 
-    QPoint currentPoint = event->pos();
-    if (pixelDataMap.contains(currentPoint)) return;
+    void ImageDisplayWidget::mousePressEvent(QMouseEvent *event) {
+        if (event->button() == Qt::LeftButton) {
+            lastPoint = event->pos();
+        }
+    }
 
-    QRgb rgb = QColor(image.pixel(currentPoint)).rgb();
+    void ImageDisplayWidget::mouseMoveEvent(QMouseEvent *event) {
+        QPoint currentPoint = event->pos();
 
-    pixelDataMap.insert(currentPoint, rgb);
-    drawLineTo(event->pos());
-}
+        if (pixelDataMap.contains(currentPoint) or currentLayer == "baseImage") return;
 
+        QRgb rgb = QColor(image.pixel(currentPoint)).rgb();
 
-void ImageDisplayWidget::mouseReleaseEvent(QMouseEvent *event) {
-    if (event->button() == Qt::LeftButton and label != "baseImage") {
+        pixelDataMap.insert(currentPoint, rgb);
         drawLineTo(event->pos());
     }
-}
 
-void ImageDisplayWidget::setImage(const QImage &newImage) {
-    image = newImage;
-    compositeImage = createImageWithOverlay();
-    QPixmap p = QPixmap::fromImage(compositeImage);
-    setPixmap(p);
-    adjustSize();
-}
 
-const QImage &ImageDisplayWidget::getImage() const {
-    return image;
-}
+    void ImageDisplayWidget::mouseReleaseEvent(QMouseEvent *event) {
+        if (event->button() == Qt::LeftButton and currentLayer != "baseImage") {
+            drawLineTo(event->pos());
+        }
+    }
 
-const QHash<QPoint, QRgb> &ImageDisplayWidget::getPixelDataMap() const {
-    return pixelDataMap;
-}
+    void ImageDisplayWidget::setImage(const QImage &newImage) {
+        image = newImage;
+        compositeImage = createImageWithOverlay();
+        QPixmap p = QPixmap::fromImage(compositeImage);
+        setPixmap(p);
+        adjustSize();
+    }
 
-void ImageDisplayWidget::clearPixelDataMap() {
-    pixelDataMap = {};
-}
+    const QHash<QPoint, QRgb> &ImageDisplayWidget::getPixelDataMap() const {
+        return pixelDataMap;
+    }
 
-void ImageDisplayWidget::drawLineTo(const QPoint &endPoint) {
-    QPainter painter(&compositeImage);
-    painter.setPen(QPen(penBrush, penWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-    painter.drawLine(lastPoint, endPoint);
-    int rad = (penWidth / 2) + 2;
-    update(QRect(lastPoint, endPoint).normalized()
-                   .adjusted(-rad, -rad, +rad, +rad));
-    lastPoint = endPoint;
-}
+    void ImageDisplayWidget::clearPixelDataMap() {
+        pixelDataMap = {};
+    }
 
-void ImageDisplayWidget::paintEvent(QPaintEvent *event) {
-    QPainter painter(this);
-    painter.setRenderHint(QPainter::Antialiasing, false);
-    painter.drawImage(QPoint(0,0), compositeImage);
-    update();
-}
+    void ImageDisplayWidget::drawLineTo(const QPoint &endPoint) {
+        QPainter painter(&compositeImage);
+        painter.setPen(QPen(penBrush, penWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+        painter.drawLine(lastPoint, endPoint);
+        int rad = (penWidth / 2) + 2;
+        update(QRect(lastPoint, endPoint).normalized()
+                       .adjusted(-rad, -rad, +rad, +rad));
+        lastPoint = endPoint;
+    }
 
-const QString &ImageDisplayWidget::getLabel() const {
-    return label;
-}
+    void ImageDisplayWidget::paintEvent(QPaintEvent *event) {
+        QPainter painter(this);
+        painter.setRenderHint(QPainter::Antialiasing, false);
+        painter.drawImage(QPoint(0, 0), compositeImage);
+        update();
+    }
 
-void ImageDisplayWidget::setLabel(const QString &name) {
-    ImageDisplayWidget::label = name;
-}
+    const QString &ImageDisplayWidget::getCurrentLayer() const {
+        return currentLayer;
+    }
 
-QImage ImageDisplayWidget::createImageWithOverlay() {
-    QImage imageWithOverlay = QImage(image.size(), image.format());
-    QPainter painter(&imageWithOverlay);
+    void ImageDisplayWidget::setCurrentLayer(const QString &layerName) {
+        currentLayer = layerName;
+    }
 
-    painter.setCompositionMode(QPainter::CompositionMode_Source);
-    painter.fillRect(imageWithOverlay.rect(), Qt::transparent);
+    QImage ImageDisplayWidget::createImageWithOverlay() {
+        QImage imageWithOverlay = QImage(image.size(), image.format());
+        QPainter painter(&imageWithOverlay);
 
-    painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
-    painter.drawImage(0, 0, image);
+        painter.setCompositionMode(QPainter::CompositionMode_Source);
+        painter.fillRect(imageWithOverlay.rect(), Qt::transparent);
 
-    painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
-    painter.drawImage(0, 0, image.createAlphaMask());
+        painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+        painter.drawImage(0, 0, image);
 
-    painter.end();
+        painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+        painter.drawImage(0, 0, image.createAlphaMask());
 
-    return imageWithOverlay;
-}
+        painter.end();
 
-int ImageDisplayWidget::getPenWidth() const {
-    return penWidth;
-}
+        return imageWithOverlay;
+    }
 
-void ImageDisplayWidget::setPenWidth(int penWidth) {
-    ImageDisplayWidget::penWidth = penWidth;
-}
+    int ImageDisplayWidget::getPenWidth() const {
+        return penWidth;
+    }
 
-QBrush ImageDisplayWidget::getPenBrush() const {
-    return penBrush;
-}
+    void ImageDisplayWidget::setPenWidth(int newPenWidth) {
+        penWidth = newPenWidth;
+    }
 
-void ImageDisplayWidget::setPenBrush(const QBrush &penBrush) {
-    ImageDisplayWidget::penBrush = penBrush;
-}
+    void ImageDisplayWidget::setPenBrush(const QBrush &newPenBrush) {
+        penBrush = newPenBrush;
+    }
 
-void ImageDisplayWidget::resizeEvent(QResizeEvent *event) {
-    QWidget::resizeEvent(event);
-    resizeImage();
-}
+    void ImageDisplayWidget::resizeEvent(QResizeEvent *event) {
+        QWidget::resizeEvent(event);
+        resizeImage();
+    }
 
-void ImageDisplayWidget::resizeImage() {
-    image = image.scaled(this->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
-    compositeImage = compositeImage.scaled(this->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    void ImageDisplayWidget::resizeImage() {
+        image = image.scaled(this->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        compositeImage = compositeImage.scaled(this->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        update();
+    }
+
+    const QBrush &ImageDisplayWidget::getPenBrush() const {
+        return penBrush;
+    }
 }
 
 

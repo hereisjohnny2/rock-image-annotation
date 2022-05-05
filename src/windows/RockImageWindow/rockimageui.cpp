@@ -17,7 +17,7 @@ namespace RockImageUI {
         connect(ui->openImageAction, SIGNAL(triggered()), this, SLOT(openImage()));
         connect(ui->saveDataAction, SIGNAL(triggered()), this, SLOT(saveTableData()));
         connect(ui->cleanTableAction, SIGNAL(triggered()), this, SLOT(cleanTable()));
-        connect(ui->exitAction, &QAction::triggered, [this](){QApplication::quit();});
+        connect(ui->exitAction, &QAction::triggered, [](){QApplication::quit();});
 
         // Images Menu Actions
         connect(ui->addLayerAction, SIGNAL(triggered()), this, SLOT(addLayer()));
@@ -132,7 +132,7 @@ namespace RockImageUI {
         pixelDataTable->setRowCount(0);
     }
 
-    void RockImageUI::applyBinarization() {
+    [[maybe_unused]] void RockImageUI::applyBinarization() {
         qDebug("Apply Binarization");
     }
 
@@ -194,7 +194,7 @@ namespace RockImageUI {
             return;
         }
 
-        auto *imageDisplayWidget = window->getTopLayerImage();
+        auto *imageDisplayWidget = window->getImageDisplayWidget();
         if (imageDisplayWidget == nullptr) {
             return;
         }
@@ -211,7 +211,7 @@ namespace RockImageUI {
 
         QHash<QPoint, QRgb> pixelDataMap = imageDisplayWidget->getPixelDataMap();
         for(auto i = pixelDataMap.constBegin(); i != pixelDataMap.constEnd(); ++i) {
-            pixelDataTable->addData(i.key(), i.value(), imageDisplayWidget->getLabel());
+            pixelDataTable->addData(i.key(), i.value(), imageDisplayWidget->getCurrentLayer());
         }
 
         imageDisplayWidget->clearPixelDataMap();
@@ -282,19 +282,6 @@ namespace RockImageUI {
     PixelDataTable *RockImageUI::getCurrentDataTable() {
         auto *pixelDataTable = dynamic_cast<PixelDataTable*>(ui->dataTablesTab->currentWidget());
         return pixelDataTable;
-    }
-
-    ImageDisplayWidget *RockImageUI::getCurrentSubWindowTopLayerImage() {
-        auto currentSubWindow = getCurrentSubWindow();
-        if (currentSubWindow == nullptr) {
-            QMessageBox::warning(this,
-                                 "Área de Trabalho Vazia",
-                                 "Não existe nenhuma janela ativa no momento com dados a serem coletados.");
-            return nullptr;
-        }
-
-        auto *imageDisplayWidget = dynamic_cast<ImageDisplayWidget*>(currentSubWindow->getTopLayerImage());
-        return imageDisplayWidget;
     }
 
     void RockImageUI::createToolBar() {
@@ -405,15 +392,16 @@ namespace RockImageUI {
                                               tr("Adicionar Camada"),
                                               tr("Label:"), QLineEdit::Normal, "layer", &isOk);
         if (!isOk or label.isEmpty()) {
-            QMessageBox::warning(this, tr("Adicionar Camada"), tr("Toda camada deve possuir uma label."));
+            QMessageBox::warning(this, tr("Adicionar Camada"), tr("Toda camada deve possuir uma currentLayer."));
             return;
         }
 
-        window->addNewLayer(label);
+        if (!window->addNewLayer(label)) return;
 
         auto layerTreeItem = new QTreeWidgetItem();
         layerTreeItem->setText(0, label);
-        layerTreeItem->setBackground(1, window->getTopLayerImage()->getPenBrush());
+        layerTreeItem->setBackground(1, window->getImageDisplayWidget()->getPenBrush());
+
         auto node = ui->imageTree->findItems(window->windowTitle(), Qt::MatchExactly)[0];
         node->addChild(layerTreeItem);
 
@@ -423,6 +411,13 @@ namespace RockImageUI {
     void RockImageUI::removeCurrentLayerLayer() {
         auto window = getCurrentSubWindow();
         if (window == nullptr) return;
+        if (window->getImageDisplayWidget()->getCurrentLayer() == "baseImage") {
+            QMessageBox::warning(
+                    this,
+                    QGuiApplication::applicationDisplayName(),
+                    tr("It is not possible to remove the baseImage layer"));
+            return;
+        }
         window->removeCurrentLayer();
     }
 
@@ -437,14 +432,14 @@ namespace RockImageUI {
 
         if (treeWidgetItem->parent() == nullptr) {
             subWindowName = treeWidgetItem->text(0);
-            name = StackedImagesWidget::BASE_IMAGE;
+            name = "baseImage";
         } else {
             subWindowName = treeWidgetItem->parent()->text(0);
             name = treeWidgetItem->text(column);
         }
 
         auto subWindow = getSubWidowByName(subWindowName);
-        subWindow->showLayer(name);
+        subWindow->setCurrentLayer(name);
     }
 
     bool RockImageUI::removeLayer(QTreeWidgetItem* item) {

@@ -30,8 +30,6 @@ add_executable(rock_image_cpp
         src/widgets/ImageDisplayWidget.h
         src/windows/Dialogs/CustomMessageDialogs.cpp
         src/windows/Dialogs/CustomMessageDialogs.h
-        src/widgets/StackedImagesWidget.cpp
-        src/widgets/StackedImagesWidget.h
         src/NeuralNetwork/models/RockImageModel.cpp
         src/NeuralNetwork/models/RockImageModel.h
         src/NeuralNetwork/datasets/RockImageDataset.cpp 

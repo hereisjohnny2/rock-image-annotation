@@ -218,7 +218,7 @@
     <string>Alterar Label</string>
    </property>
    <property name="toolTip">
-    <string>Altera a label atribuida ao dado coletado</string>
+    <string>Altera a currentLayer atribuida ao dado coletado</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+;</string>

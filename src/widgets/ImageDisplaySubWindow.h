@@ -6,29 +6,33 @@
 #include <QLabel>
 #include <QScrollArea>
 #include "ImageDisplayWidget.h"
-#include "StackedImagesWidget.h"
 
 class ImageDisplaySubWindow : public QMdiSubWindow {
 
 private:
-    StackedImagesWidget *stackedImagesWidget;
+    QHash<QString, QBrush> layersColors{};
+    ImageDisplayWidget::ImageDisplayWidget* imageDisplayWidget{};
     QScrollArea *scrollArea;
-    double scaleFactor = 1;
-    static void adjustScrollBar(QScrollBar *bar, double factor);
+    double scaleFactor{1.0};
+
     static QColor generateRandomColor();
+    static void adjustScrollBar(QScrollBar *bar, double factor);
 
 public:
     ImageDisplaySubWindow(const QString& filePath, const QString& fileName);
-    [[nodiscard]] ImageDisplayWidget *getTopLayerImage() const;
+
+    [[nodiscard]] ImageDisplayWidget::ImageDisplayWidget *getImageDisplayWidget() const;
+
     bool loadImage(const QString &filePath);
     void scaleImage(double factor);
-    void addNewLayer(const QString& label);
-    void showLayer(const QString &name);
+    bool addNewLayer(const QString& label);
+
+    void setCurrentLayer(const QString &layerName);
+    void removeLayerByName(const QString& layerName);
     void removeCurrentLayer();
-    void removeLayerByName(const QString& name);
+
     void updatePenWidth(const int& value);
     void updatePenBrush(const QColor & value);
-
 };
 
 

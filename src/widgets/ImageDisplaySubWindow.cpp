@@ -129,5 +129,5 @@ void ImageDisplaySubWindow::removeCurrentLayer() {
     if (imageDisplayWidget == nullptr) return;
 
     layersColors.remove(imageDisplayWidget->getCurrentLayer());
-    setCurrentLayer("baseImage");
+    imageDisplayWidget->removeLayer(imageDisplayWidget->getCurrentLayer());
 }

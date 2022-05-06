@@ -22,7 +22,7 @@ namespace ImageDisplayWidget {
 
         QRgb rgb = QColor(image.pixel(currentPoint)).rgb();
 
-        pixelDataMap.insert(currentPoint, rgb);
+        pixelDataMap.insert(currentPoint, { rgb, currentLayer });
         drawLineTo(event->pos());
     }
 
@@ -41,7 +41,7 @@ namespace ImageDisplayWidget {
         adjustSize();
     }
 
-    const QHash<QPoint, QRgb> &ImageDisplayWidget::getPixelDataMap() const {
+    const QHash<QPoint, RGBLayerName> &ImageDisplayWidget::getPixelDataMap() const {
         return pixelDataMap;
     }
 
@@ -117,6 +117,10 @@ namespace ImageDisplayWidget {
 
     const QBrush &ImageDisplayWidget::getPenBrush() const {
         return penBrush;
+    }
+
+    void ImageDisplayWidget::removeLayer(const QString &layerName) {
+        setCurrentLayer("baseImage");
     }
 }
 

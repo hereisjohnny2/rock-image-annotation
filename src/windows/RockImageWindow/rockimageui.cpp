@@ -209,9 +209,11 @@ namespace RockImageUI {
 
         ui->dataTablesTab->setCurrentWidget(pixelDataTable);
 
-        QHash<QPoint, QRgb> pixelDataMap = imageDisplayWidget->getPixelDataMap();
-        for(auto i = pixelDataMap.constBegin(); i != pixelDataMap.constEnd(); ++i) {
-            pixelDataTable->addData(i.key(), i.value(), imageDisplayWidget->getCurrentLayer());
+        QHash<QPoint, ImageDisplayWidget::RGBLayerName> pixelDataMap = imageDisplayWidget->getPixelDataMap();
+        ImageDisplayWidget::RGBLayerName rgbLayerName;
+        for(auto it = pixelDataMap.constBegin(); it != pixelDataMap.constEnd(); ++it) {
+            rgbLayerName = it.value();
+            pixelDataTable->addData(it.key(), rgbLayerName.rgb, rgbLayerName.layerName);
         }
 
         imageDisplayWidget->clearPixelDataMap();

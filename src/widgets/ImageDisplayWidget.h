@@ -7,6 +7,14 @@
 #include "PixelDataTable.h"
 
 namespace ImageDisplayWidget {
+    struct RGBLayerName {
+        QRgb rgb{};
+        QString layerName;
+
+        RGBLayerName() = default;
+        RGBLayerName(QRgb pRgb, QString pLayerName) : rgb(pRgb), layerName(pLayerName) {}
+    };
+
     class ImageDisplayWidget : public QLabel {
     public:
 
@@ -14,7 +22,7 @@ namespace ImageDisplayWidget {
         QImage image{};
         QImage compositeImage{};
 
-        QHash<QPoint, QRgb> pixelDataMap{};
+        QHash<QPoint, RGBLayerName> pixelDataMap{};
         QPoint lastPoint{};
         QString currentLayer{""};
 
@@ -29,7 +37,7 @@ namespace ImageDisplayWidget {
     public:
         ImageDisplayWidget();
 
-        [[nodiscard]] const QHash<QPoint, QRgb> &getPixelDataMap() const;
+        [[nodiscard]] const QHash<QPoint, RGBLayerName> &getPixelDataMap() const;
 
         [[nodiscard]] const QString &getCurrentLayer() const;
 
@@ -48,6 +56,8 @@ namespace ImageDisplayWidget {
         void clearPixelDataMap();
 
         void resizeImage();
+
+        void removeLayer(const QString &layerName);
 
     protected:
         void mousePressEvent(QMouseEvent *event) override;

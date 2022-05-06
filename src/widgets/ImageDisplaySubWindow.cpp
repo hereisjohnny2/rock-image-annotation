@@ -93,7 +93,10 @@ void ImageDisplaySubWindow::setCurrentLayer(const QString &layerName) {
 }
 
 void ImageDisplaySubWindow::removeLayerByName(const QString& layerName) {
+    if (imageDisplayWidget == nullptr) return;
+
     layersColors.remove(layerName);
+    imageDisplayWidget->removeLayer(layerName);
 }
 
 QColor ImageDisplaySubWindow::generateRandomColor() {

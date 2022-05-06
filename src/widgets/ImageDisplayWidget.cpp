@@ -121,6 +121,14 @@ namespace ImageDisplayWidget {
 
     void ImageDisplayWidget::removeLayer(const QString &layerName) {
         setCurrentLayer("baseImage");
+
+        for (auto it = pixelDataMap.begin(); it != pixelDataMap.end(); it++) {
+            if (it.value().layerName == layerName) {
+                auto imagePixel = image.pixel(it.key());
+                compositeImage.setPixel(it.key(), imagePixel);
+                pixelDataMap.remove(it.key());
+            }
+        }
     }
 }
 

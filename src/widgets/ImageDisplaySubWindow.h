@@ -29,7 +29,6 @@ public:
 
     void setCurrentLayer(const QString &layerName);
     void removeLayerByName(const QString& layerName);
-    void removeCurrentLayer();
 
     void updatePenWidth(const int& value);
     void updatePenBrush(const QColor & value);

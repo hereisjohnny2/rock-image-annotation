@@ -4,15 +4,18 @@
 
 #include <QLabel>
 #include <map>
+#include <utility>
 #include "PixelDataTable.h"
 
 namespace ImageDisplayWidget {
+    const QString BASE_IMAGE = "baseImage";
+
     struct RGBLayerName {
         QRgb rgb{};
         QString layerName;
 
         RGBLayerName() = default;
-        RGBLayerName(QRgb pRgb, QString pLayerName) : rgb(pRgb), layerName(pLayerName) {}
+        RGBLayerName(QRgb pRgb, QString pLayerName) : rgb(pRgb), layerName(std::move(pLayerName)) {}
     };
 
     class ImageDisplayWidget : public QLabel {
@@ -24,7 +27,7 @@ namespace ImageDisplayWidget {
 
         QHash<QPoint, RGBLayerName> pixelDataMap{};
         QPoint lastPoint{};
-        QString currentLayer{""};
+        QString currentLayer{BASE_IMAGE};
 
         QBrush penBrush{Qt::blue};
         int penWidth{10};

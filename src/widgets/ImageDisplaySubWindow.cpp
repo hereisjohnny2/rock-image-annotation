@@ -127,10 +127,3 @@ void ImageDisplaySubWindow::updatePenBrush(const QColor &value) {
 ImageDisplayWidget::ImageDisplayWidget *ImageDisplaySubWindow::getImageDisplayWidget() const {
     return imageDisplayWidget;
 }
-
-void ImageDisplaySubWindow::removeCurrentLayer() {
-    if (imageDisplayWidget == nullptr) return;
-
-    layersColors.remove(imageDisplayWidget->getCurrentLayer());
-    imageDisplayWidget->removeLayer(imageDisplayWidget->getCurrentLayer());
-}

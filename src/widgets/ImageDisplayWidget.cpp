@@ -18,17 +18,22 @@ namespace ImageDisplayWidget {
     void ImageDisplayWidget::mouseMoveEvent(QMouseEvent *event) {
         QPoint currentPoint = event->pos();
 
-        if (pixelDataMap.contains(currentPoint) or currentLayer == "baseImage") return;
+        if (pixelDataMap.contains(currentPoint) or currentLayer == BASE_IMAGE) return;
 
         QRgb rgb = QColor(image.pixel(currentPoint)).rgb();
 
-        pixelDataMap.insert(currentPoint, { rgb, currentLayer });
+        int rad = penWidth / 2;
+
+        for (int i = currentPoint.x() - rad; i < currentPoint.x() + rad; ++i)
+            for (int j = currentPoint.y() - rad; j < currentPoint.y() + rad; ++j)
+                pixelDataMap.insert(QPoint(i, j), {rgb, currentLayer});
+
         drawLineTo(event->pos());
     }
 
 
     void ImageDisplayWidget::mouseReleaseEvent(QMouseEvent *event) {
-        if (event->button() == Qt::LeftButton and currentLayer != "baseImage") {
+        if (event->button() == Qt::LeftButton and currentLayer != BASE_IMAGE) {
             drawLineTo(event->pos());
         }
     }
@@ -46,16 +51,22 @@ namespace ImageDisplayWidget {
     }
 
     void ImageDisplayWidget::clearPixelDataMap() {
-        pixelDataMap = {};
+        pixelDataMap.clear();
     }
 
     void ImageDisplayWidget::drawLineTo(const QPoint &endPoint) {
+        QPen pen(penBrush, penWidth,
+                 Qt::SolidLine,
+                 Qt::RoundCap,
+                 Qt::RoundJoin);
         QPainter painter(&compositeImage);
-        painter.setPen(QPen(penBrush, penWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+        painter.setPen(pen);
         painter.drawLine(lastPoint, endPoint);
+
         int rad = (penWidth / 2) + 2;
         update(QRect(lastPoint, endPoint).normalized()
                        .adjusted(-rad, -rad, +rad, +rad));
+
         lastPoint = endPoint;
     }
 
@@ -120,15 +131,21 @@ namespace ImageDisplayWidget {
     }
 
     void ImageDisplayWidget::removeLayer(const QString &layerName) {
-        setCurrentLayer("baseImage");
+        setCurrentLayer(BASE_IMAGE);
 
-        for (auto it = pixelDataMap.begin(); it != pixelDataMap.end(); it++) {
-            if (it.value().layerName == layerName) {
-                auto imagePixel = image.pixel(it.key());
-                compositeImage.setPixel(it.key(), imagePixel);
-                pixelDataMap.remove(it.key());
+        for (int i = 0; i < compositeImage.width(); ++i) {
+            for (int j = 0; j < compositeImage.height(); ++j) {
+                if (compositeImage.pixel(i, j) == penBrush.color().rgb()) {
+                    auto imagePixel = image.pixel(i, j);
+                    compositeImage.setPixel(i, j, imagePixel);
+                    pixelDataMap.remove(QPoint(i, j));
+                }
             }
         }
+
+        pixelDataMap.removeIf([&](const QHash<QPoint, RGBLayerName>::iterator &it){
+            return it.value().layerName == layerName;
+        });
     }
 }
 

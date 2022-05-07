@@ -21,7 +21,6 @@ namespace RockImageUI {
 
         // Images Menu Actions
         connect(ui->addLayerAction, SIGNAL(triggered()), this, SLOT(addLayer()));
-        connect(ui->removeLayerAction, SIGNAL(triggered()), this, SLOT(removeCurrentLayerLayer()));
         connect(ui->increaseWidthAction, SIGNAL(triggered()), this, SLOT(increaseWidth()));
         connect(ui->decreaseWidthAction, SIGNAL(triggered()), this, SLOT(decreaseWidth()));
         connect(ui->chooseColorAction, SIGNAL(triggered()), this, SLOT(chooseColor()));
@@ -410,19 +409,6 @@ namespace RockImageUI {
         ui->imageTree->setCurrentItem(layerTreeItem);
     }
 
-    void RockImageUI::removeCurrentLayerLayer() {
-        auto window = getCurrentSubWindow();
-        if (window == nullptr) return;
-        if (window->getImageDisplayWidget()->getCurrentLayer() == "baseImage") {
-            QMessageBox::warning(
-                    this,
-                    QGuiApplication::applicationDisplayName(),
-                    tr("It is not possible to remove the baseImage layer"));
-            return;
-        }
-        window->removeCurrentLayer();
-    }
-
     int RockImageUI::getPixelDataIndexTableByName(const QString &name) {
         auto table = getPixelDataTableByName(name);
         if (table == nullptr) return -1;
@@ -430,18 +416,10 @@ namespace RockImageUI {
     }
 
     void RockImageUI::showLayer(QTreeWidgetItem *treeWidgetItem, int column) {
-        QString subWindowName, name;
+        QPair<QString, QString> layerAndSubWindowName = getLayerAndSubWindowName(treeWidgetItem, column);
 
-        if (treeWidgetItem->parent() == nullptr) {
-            subWindowName = treeWidgetItem->text(0);
-            name = "baseImage";
-        } else {
-            subWindowName = treeWidgetItem->parent()->text(0);
-            name = treeWidgetItem->text(column);
-        }
-
-        auto subWindow = getSubWidowByName(subWindowName);
-        subWindow->setCurrentLayer(name);
+        auto subWindow = getSubWidowByName(layerAndSubWindowName.first);
+        subWindow->setCurrentLayer(layerAndSubWindowName.second);
     }
 
     bool RockImageUI::removeLayer(QTreeWidgetItem* item) {
@@ -492,5 +470,19 @@ namespace RockImageUI {
         node->setBackground(1, color);
 
         window->updatePenBrush(color);
+    }
+
+    QPair<QString, QString> RockImageUI::getLayerAndSubWindowName(QTreeWidgetItem* treeWidgetItem, int column) {
+        QString name, subWindowName;
+
+        if (treeWidgetItem->parent() == nullptr) {
+            subWindowName = treeWidgetItem->text(0);
+            name = "baseImage";
+        } else {
+            subWindowName = treeWidgetItem->parent()->text(0);
+            name = treeWidgetItem->text(column);
+        }
+
+        return {subWindowName, name};
     }
 } // RockImageUI

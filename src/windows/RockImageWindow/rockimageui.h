@@ -47,7 +47,6 @@ namespace RockImageUI {
         void zoomOut();
         void changeTargetLabel();
         void addLayer();
-        void removeCurrentLayerLayer();
         void showLayer(QTreeWidgetItem *treeWidgetItem, int column);
         void increaseWidth();
         void decreaseWidth();
@@ -66,6 +65,7 @@ namespace RockImageUI {
         void setActionsIcons();
         bool removeLayer(QTreeWidgetItem* item);
         bool eventFilter(QObject *obj, QEvent *event) override;
+        static QPair<QString, QString> getLayerAndSubWindowName(QTreeWidgetItem* treeWidgetItem, int column);
     };
 
 } // RockImageUI

@@ -81,7 +81,3 @@ Buil the image and then use the `tools/rundocker` script with the images reposit
 $ docker build -t rockimage .
 $ tools/rundocker "/path/to/images"
 ```
-
-## Testing 🧪
-
-

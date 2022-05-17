@@ -76,24 +76,10 @@ Then grant access to everyone with `xhost`. It's going to be necessary to run th
 $ xhost +
 ```
 
-Finally, build the image and run the container with `docker-compose`.
-
+Buil the image and then use the `tools/rundocker` script with the images repository as a parameter. It's necessary because the docker container will run isolated from the rest of the machine, therefore a volume (a folder) must to be shared.
 ```shell
-$ docker-compose build
-$ docker-compose up
-```
-
-It's also possible to build and run the container without `docker-compose`.
-
-```shell
-$ docker build -t rockimage . 
-$ docker run --name rockimagecpp --rm \
-  -e "DISPLAY=$DISPLAY" \
-  -v "$HOME/.Xauthority:/root/.Xauthority:ro" \
-  -v "$pwd:/usr/src/rockimage" \
-  --network host \
-   rockimage\
-
+$ docker build -t rockimage .
+$ tools/rundocker "/path/to/images"
 ```
 
 ## Testing 🧪

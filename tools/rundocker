@@ -1,0 +1,14 @@
+#!/bin/bash
+
+echo "Running Application on Docker"
+
+DISPLAY_ENV="DISPLAY=$DISPLAY"
+DISPLAY_VOL="$HOME/.Xauthority:/root/.Xauthority:ro"
+PROJECT_VOL="$pwd:/usr/src/rockimage"
+
+IMAGES_DIR=$1
+IMAGES_VOL="$1:/usr/images"
+
+IMAGE_NAME="rockimage"
+
+docker run --name rockimagecpp --rm -e  $DISPLAY_ENV -v $DISPLAY_VOL -v $PROJECT_VOL -v $IMAGES_VOL --network host $IMAGE_NAME

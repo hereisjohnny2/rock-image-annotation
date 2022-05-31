@@ -76,7 +76,7 @@ Then grant access to everyone with `xhost`. It's going to be necessary to run th
 $ xhost +
 ```
 
-Buil the image and then use the `tools/rundocker` script with the images repository as a parameter. It's necessary because the docker container will run isolated from the rest of the machine, therefore a volume (a folder) must to be shared.
+Build the image and then use the `tools/rundocker` script with the images repository as a parameter. It's necessary because the docker container will run isolated from the rest of the machine, therefore a volume (a folder) must to be shared.
 ```shell
 $ docker build -t rockimage .
 $ tools/rundocker "/path/to/images"

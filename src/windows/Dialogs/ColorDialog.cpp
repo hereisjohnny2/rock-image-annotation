@@ -3,7 +3,7 @@
 #include "ColorDialog.h"
 
 ColorDialog::ColorDialog(QWidget *parent) {
-    lytMain = new QFormLayout(this);
+    formLayout = new QFormLayout(this);
 
     createColorInput("Vermelho");
     createColorInput("Verde");
@@ -15,7 +15,7 @@ ColorDialog::ColorDialog(QWidget *parent) {
     auto *buttonBox = new QDialogButtonBox
             ( QDialogButtonBox::Ok | QDialogButtonBox::Cancel,
               Qt::Horizontal, this );
-    lytMain->addWidget(buttonBox);
+    formLayout->addWidget(buttonBox);
 
     bool conn = connect(buttonBox, &QDialogButtonBox::accepted,
                         this, &ColorDialog::accept);
@@ -24,7 +24,7 @@ ColorDialog::ColorDialog(QWidget *parent) {
                    this, &ColorDialog::reject);
     Q_ASSERT(conn);
 
-    setLayout(lytMain);
+    setLayout(formLayout);
 }
 
 QList<int> ColorDialog::getStrings(QWidget *parent, bool *ok)
@@ -53,7 +53,7 @@ void ColorDialog::createColorInput(const QString &label) {
     value->setMinimum(0);
     value->setMaximum(255);
     value->setValue(125);
-    lytMain->addRow(tLabel, value);
+    formLayout->addRow(tLabel, value);
 
     fields << value;
 }

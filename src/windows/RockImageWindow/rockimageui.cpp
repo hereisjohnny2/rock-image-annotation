@@ -131,10 +131,6 @@ namespace RockImageUI {
         pixelDataTable->setRowCount(0);
     }
 
-    [[maybe_unused]] void RockImageUI::applyBinarization() {
-        qDebug("Apply Binarization");
-    }
-
     void RockImageUI::loadImage(const QString& filePath) {
         QListWidgetItem *listItem;
 
@@ -265,16 +261,6 @@ namespace RockImageUI {
         currentSubWindow->scaleImage(0.75);
     }
 
-    void RockImageUI::changeTargetLabel() {
-        if (ui->changeLabelAction->isChecked()) {
-            labelData = LabelData::SOLID;
-        } else {
-            labelData = LabelData::PORE;
-        }
-
-        qDebug() << "Label: " << labelData;
-    }
-
     ImageDisplaySubWindow *RockImageUI::getCurrentSubWindow() {
         auto *activeSubWindow = dynamic_cast<ImageDisplaySubWindow*>(ui->openImagesArea->currentSubWindow());
         return activeSubWindow;
@@ -290,7 +276,7 @@ namespace RockImageUI {
         ui->toolBar->addAction(ui->openImageAction);
         ui->toolBar->addSeparator();
         ui->toolBar->addAction(ui->collectDataAction);
-        ui->toolBar->addAction(ui->changeLabelAction);
+        ui->toolBar->addAction(ui->addLayerAction);
         ui->toolBar->addAction(ui->cleanTableAction);
         ui->toolBar->addSeparator();
         ui->toolBar->addAction(ui->zoomInAction);
@@ -304,9 +290,8 @@ namespace RockImageUI {
         ui->saveDataAction->setIcon(QIcon("../assets/icons/save.svg"));
         ui->cleanTableAction->setIcon(QIcon("../assets/icons/clean-table.svg"));
         ui->exitAction->setIcon(QIcon("../assets/icons/exit.svg"));
-        ui->applyBinarizationAction->setIcon(QIcon("../assets/icons/binary.svg"));
         ui->collectDataAction->setIcon(QIcon("../assets/icons/collect.svg"));
-        ui->changeLabelAction->setIcon(QIcon("../assets/icons/change.svg"));
+        ui->changeLabelAction->setIcon(QIcon("../assets/icons/layer.svg"));
         ui->zoomInAction->setIcon(QIcon("../assets/icons/zoom-in.svg"));
         ui->zoomOutAction->setIcon(QIcon("../assets/icons/zoom-out.svg"));
         ui->closeAllAction->setIcon(QIcon("../assets/icons/close-all.svg"));

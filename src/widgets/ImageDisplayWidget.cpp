@@ -77,10 +77,6 @@ namespace ImageDisplayWidget {
         update();
     }
 
-    const QString &ImageDisplayWidget::getCurrentLayer() const {
-        return currentLayer;
-    }
-
     void ImageDisplayWidget::setCurrentLayer(const QString &layerName) {
         currentLayer = layerName;
     }

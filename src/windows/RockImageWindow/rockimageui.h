@@ -8,11 +8,6 @@
 #include "../../widgets/ImageDisplaySubWindow.h"
 
 namespace RockImageUI {
-    enum LabelData {
-        SOLID,
-        PORE
-    };
-
     QT_BEGIN_NAMESPACE
     namespace Ui { class RockImageUI; }
     QT_END_NAMESPACE
@@ -23,49 +18,69 @@ namespace RockImageUI {
     class RockImageUI : public QMainWindow {
     Q_OBJECT
 
-    private:
-        LabelData labelData {LabelData::PORE};
-        QAction *showImagesAction, *showDataTablesAction;
-        Ui::RockImageUI *ui;
-
-
     public:
         explicit RockImageUI(QWidget *parent = nullptr);
 
         ~RockImageUI() override;
 
+    private:
+        QAction *showImagesAction, *showDataTablesAction;
+        Ui::RockImageUI *ui;
+
     private slots:
+
         void openImage();
+
         void saveTableData();
+
         void cleanTable();
 
-        [[maybe_unused]] static void applyBinarization();
         void collectDataFromImage();
+
         void showImage(QListWidgetItem *listWidgetItem);
+
         void closeAllWindows();
+
         void zoomIn();
+
         void zoomOut();
-        void changeTargetLabel();
+
         void addLayer();
+
         void showLayer(QTreeWidgetItem *treeWidgetItem, int column);
+
         void increaseWidth();
+
         void decreaseWidth();
+
         void chooseColor();
 
     private:
-        ImageDisplaySubWindow *getSubWidowByName(const QString& name);
+        ImageDisplaySubWindow *getSubWidowByName(const QString &name);
+
         ImageDisplaySubWindow *getCurrentSubWindow();
-        PixelDataTable* getCurrentDataTable();
-        PixelDataTable*  getPixelDataTableByName(const QString& name);
-        int  getPixelDataIndexTableByName(const QString& name);
+
+        PixelDataTable *getCurrentDataTable();
+
+        PixelDataTable *getPixelDataTableByName(const QString &name);
+
+        int getPixelDataIndexTableByName(const QString &name);
+
         void deleteCurrentImage();
-        void deleteImage(const QString& name);
-        void loadImage(const QString& filePath);
+
+        void deleteImage(const QString &name);
+
+        void loadImage(const QString &filePath);
+
         void createToolBar();
+
         void setActionsIcons();
-        bool removeLayer(QTreeWidgetItem* item);
+
+        bool removeLayer(QTreeWidgetItem *item);
+
         bool eventFilter(QObject *obj, QEvent *event) override;
-        static QPair<QString, QString> getLayerAndSubWindowName(QTreeWidgetItem* treeWidgetItem, int column);
+
+        static QPair<QString, QString> getLayerAndSubWindowName(QTreeWidgetItem *treeWidgetItem, int column);
     };
 
 } // RockImageUI

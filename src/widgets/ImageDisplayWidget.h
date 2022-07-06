@@ -12,37 +12,19 @@ namespace ImageDisplayWidget {
 
     struct RGBLayerName {
         QRgb rgb{};
+
         QString layerName;
 
         RGBLayerName() = default;
+
         RGBLayerName(QRgb pRgb, QString pLayerName) : rgb(pRgb), layerName(std::move(pLayerName)) {}
     };
 
     class ImageDisplayWidget : public QLabel {
     public:
-
-    private:
-        QImage image{};
-        QImage compositeImage{};
-
-        QHash<QPoint, RGBLayerName> pixelDataMap{};
-        QPoint lastPoint{};
-        QString currentLayer{BASE_IMAGE};
-
-        QBrush penBrush{Qt::blue};
-        int penWidth{10};
-
-    private:
-        void drawLineTo(const QPoint &endPoint);
-
-        QImage createImageWithOverlay();
-
-    public:
         ImageDisplayWidget();
 
         [[nodiscard]] const QHash<QPoint, RGBLayerName> &getPixelDataMap() const;
-
-        [[nodiscard]] const QString &getCurrentLayer() const;
 
         [[nodiscard]] int getPenWidth() const;
 
@@ -61,6 +43,25 @@ namespace ImageDisplayWidget {
         void resizeImage();
 
         void removeLayer(const QString &layerName);
+
+    private:
+        QImage image{};
+
+        QImage compositeImage{};
+
+        QHash<QPoint, RGBLayerName> pixelDataMap{};
+
+        QPoint lastPoint{};
+
+        QString currentLayer{BASE_IMAGE};
+
+        QBrush penBrush{Qt::blue};
+
+        int penWidth{10};
+
+        void drawLineTo(const QPoint &endPoint);
+
+        QImage createImageWithOverlay();
 
     protected:
         void mousePressEvent(QMouseEvent *event) override;

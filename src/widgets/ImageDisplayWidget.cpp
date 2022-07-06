@@ -18,15 +18,17 @@ namespace ImageDisplayWidget {
     void ImageDisplayWidget::mouseMoveEvent(QMouseEvent *event) {
         QPoint currentPoint = event->pos();
 
-        if (pixelDataMap.contains(currentPoint) or currentLayer == BASE_IMAGE) return;
+        if (currentLayer == BASE_IMAGE) return;
 
-        QRgb rgb = QColor(image.pixel(currentPoint)).rgb();
+        if (pixelDataMap.contains(currentPoint)) {
+            QRgb rgb = QColor(image.pixel(currentPoint)).rgb();
 
-        int rad = penWidth / 2;
+            int rad = penWidth / 2;
 
-        for (int i = currentPoint.x() - rad; i < currentPoint.x() + rad; ++i)
-            for (int j = currentPoint.y() - rad; j < currentPoint.y() + rad; ++j)
-                pixelDataMap.insert(QPoint(i, j), {rgb, currentLayer});
+            for (int i = currentPoint.x() - rad; i < currentPoint.x() + rad; ++i)
+                for (int j = currentPoint.y() - rad; j < currentPoint.y() + rad; ++j)
+                    pixelDataMap.insert(QPoint(i, j), {rgb, currentLayer});
+        }
 
         drawLineTo(event->pos());
     }
